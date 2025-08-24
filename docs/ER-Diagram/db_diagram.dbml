@@ -16,7 +16,6 @@ Table User {
 Enum roleName {
   staff
   admin
-  employee
 }
 
 Table Profile  {
@@ -49,19 +48,5 @@ Enum orders_status {
   returned
 }
 
-Table Order {
-  id uuid
-  ToolId uuid
-  ProfileId uuid
-  OrderDate datetime [default: `now()`]
-  PickedUpDate datetime
-  ReturnDate datetime
-  TypeOfOrder orders_status
-  totalItem integer
-}
-
 Ref: Tool.ProfileId > Profile.id // N:1
 Ref: Tool.CategoryId > Category.id // N:1
-
-Ref: Order.ToolId > Tool.id // N:1
-Ref: Order.ProfileId > Profile.id // N:1
