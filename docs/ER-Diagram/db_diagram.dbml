@@ -1,0 +1,67 @@
+Table Category {
+  id uuid [pk]
+  name varchar
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table User {
+  id uuid [pk]
+  email varchar
+  password varchar
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Enum roleName {
+  staff
+  admin
+  employee
+}
+
+Table Profile  {
+  id uuid [pk]
+  username varchar
+  fullname varchar
+  dateOfBirth date
+  UserId uuid [ref: - User.id] // 1:1 Relationship
+  role roleName [default: 'staff']
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Table Tool {
+  id uuid [pk]
+  name varchar
+  price int 
+  stock int
+  imageUrl varchar
+  CategoryId uuid 
+  ProfileId uuid
+  createdAt timestamp
+  updatedAt timestamp
+}
+
+Enum orders_status {
+  preparing
+  ready_to_pick
+  picked_up
+  returned
+}
+
+Table Order {
+  id uuid
+  ToolId uuid
+  ProfileId uuid
+  OrderDate datetime [default: `now()`]
+  PickedUpDate datetime
+  ReturnDate datetime
+  TypeOfOrder orders_status
+  totalItem integer
+}
+
+Ref: Tool.ProfileId > Profile.id // N:1
+Ref: Tool.CategoryId > Category.id // N:1
+
+Ref: Order.ToolId > Tool.id // N:1
+Ref: Order.ProfileId > Profile.id // N:1
