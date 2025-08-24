@@ -1,14 +1,14 @@
 Table Category {
   id uuid [pk]
-  name varchar
+  name varchar [not null]
   createdAt timestamp
   updatedAt timestamp
 }
 
 Table User {
   id uuid [pk]
-  email varchar
-  password varchar
+  email varchar [not null]
+  password varchar [not null]
   createdAt timestamp
   updatedAt timestamp
 }
@@ -20,9 +20,10 @@ Enum roleName {
 
 Table Profile  {
   id uuid [pk]
-  username varchar
-  fullname varchar
-  dateOfBirth date
+  username varchar [null]
+  imageUrl varchar [null]
+  fullname varchar [null]
+  dateOfBirth date [null]
   UserId uuid [ref: - User.id] // 1:1 Relationship
   role roleName [default: 'staff']
   createdAt timestamp
@@ -33,19 +34,12 @@ Table Tool {
   id uuid [pk]
   name varchar
   price int 
-  stock int
-  imageUrl varchar
+  stock int 
+  imageUrl varchar [null]
   CategoryId uuid 
   ProfileId uuid
   createdAt timestamp
   updatedAt timestamp
-}
-
-Enum orders_status {
-  preparing
-  ready_to_pick
-  picked_up
-  returned
 }
 
 Ref: Tool.ProfileId > Profile.id // N:1
