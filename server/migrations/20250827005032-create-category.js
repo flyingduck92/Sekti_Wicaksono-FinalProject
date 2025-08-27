@@ -11,7 +11,8 @@ module.exports = {
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       createdAt: {
         allowNull: false,
@@ -23,7 +24,7 @@ module.exports = {
       }
     }, {
       indexes: [
-        { fields: ['name'], name: 'index_category_name' }
+        { unique: true, fields: ['name'], name: 'index_category_name' }
       ]
     })
   },

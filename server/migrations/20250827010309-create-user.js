@@ -11,6 +11,7 @@ module.exports = {
       },
       email: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       password: {
@@ -27,7 +28,7 @@ module.exports = {
       }
     }, {
       indexes: [
-        { fields: ['email'], name: 'index_user_email' }
+        { unique: true, fields: ['email'], name: 'index_user_email' }
       ]
     })
   },

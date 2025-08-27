@@ -10,7 +10,8 @@ module.exports = {
         defaultValue: Sequelize.literal('uuid_generate_v4()')
       },
       code: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       name: {
         allowNull: false,
@@ -43,7 +44,7 @@ module.exports = {
       }
     }, {
       indexes: [
-        { fields: ['code'], name: 'index_tool_code' }
+        { unique: true, fields: ['code'], name: 'index_tool_code' }
       ]
     })
   },
