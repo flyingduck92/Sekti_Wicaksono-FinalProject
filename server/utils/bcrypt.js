@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt')
 const saltRound = 10
 
-const encryptPwd = (data) => {
-  const encrypted = bcrypt.hashSync(data, saltRound)
+const encryptPwd = async (data) => {
+  const encrypted = await bcrypt.hashSync(data, saltRound)
   return encrypted
 }
 
-const decryptPwd = (data, hashPwd) => {
-  const decrypted = bcrypt.compareSync(data, hashPwd)
+const decryptPwd = async (data, hashPwd) => {
+  const decrypted = await bcrypt.compareSync(data, hashPwd)
   return decrypted
 }
 
