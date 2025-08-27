@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -10,7 +10,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       username: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       imageUrl: {
         type: Sequelize.STRING
@@ -25,7 +26,8 @@ module.exports = {
         type: Sequelize.UUID
       },
       role: {
-        type: Sequelize.ENUM('staff', 'admin')
+        type: Sequelize.ENUM('staff', 'admin'),
+        defaultValue: 'staff'
       },
       createdAt: {
         allowNull: false,
@@ -35,9 +37,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    }, {
+      indexes: [
+        { unique: true, fields: ['username'], name: 'index_profile_username' },
+        { fields: ['fullname'], name: 'index_profile_fullname' },
+      ]
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Profiles');
+    await queryInterface.dropTable('Profiles')
   }
-};
+}

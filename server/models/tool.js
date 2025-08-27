@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Tool extends Model {
     /**
@@ -10,7 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Tool.belongsTo(models.Profile, {
+        foreignKey: 'ProfileId',
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+      })
+      Tool.belongsTo(models.Category, {
+        foreignKey: 'CategoryId',
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+      })
     }
   }
   Tool.init({
@@ -24,6 +33,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Tool',
-  });
-  return Tool;
-};
+  })
+  return Tool
+}

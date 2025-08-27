@@ -18,7 +18,7 @@ module.exports = {
 # Sequelize CLI Model Generate
 ### User Table
 ```sh
-npx sequelize-cli model:generate --name User --attributes email:string
+npx sequelize-cli model:generate --name User --attributes email:string,password:string
 ```
 ### Profile Table
 ```sh
@@ -33,4 +33,6 @@ npx sequelize-cli model:generate --name Tool --attributes code:string,name:strin
 npx sequelize-cli model:generate --name Category --attributes name:string
 ```
 # Sequelize Migrations Update
+
+
 # Sequelize Models Association

@@ -5,7 +5,7 @@ Table Category {
   updatedAt timestamp
 
   Indexes {
-    (name) [name:"category_name"]
+    (name) [name:"index_category_name"]
     id [unique]
   }
 }
@@ -18,7 +18,7 @@ Table User {
   updatedAt timestamp
 
   Indexes {
-    (email) [name:"user_email"]
+    (email) [name:"index_user_email"]
     id [unique]
   }
 }
@@ -40,8 +40,8 @@ Table Profile  {
   updatedAt timestamp
 
   Indexes {
-    (fullname) [name:"profile_fullname"]
-    username [unique]
+    (fullname) [name:"index_profile_fullname"]
+    username [unique] [name:"index_profile_username"]
     id [unique]
   }
 }
@@ -59,7 +59,7 @@ Table Tool {
   updatedAt timestamp
 
   Indexes {
-    (code) [name:"tool_code"]
+    (code) [name:"index_tool_code"]
     id [unique]
   }
 }
