@@ -23,7 +23,13 @@ module.exports = {
         type: Sequelize.DATE
       },
       UserId: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       role: {
         type: Sequelize.ENUM('staff', 'admin'),

@@ -2,7 +2,7 @@ const UserRoutes = require('express').Router()
 const { UserController } = require('../controllers')
 
 // specific routes first
-UserRoutes.get('/search', UserController.searchUser)
+// UserRoutes.get('/search', UserController.searchUser)
 UserRoutes.post('/login', UserController.loginUser)
 UserRoutes.post('/create', UserController.addUser)
 UserRoutes.put('/update/:id', UserController.updateUser)

@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Profile.belongsTo(models.User, {
         foreignKey: 'UserId',
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE', // Profile will be deleted if User is deleted
         onUpdate: 'CASCADE'
       })
 

@@ -167,52 +167,52 @@ class UserController {
     }
   }
 
-  static async searchUser(req, res) {
-    try {
-      // searchquery and pagination
-      const searchQuery = req.query.search
-      const limit = Number(req.query.limit) || 10
-      const offset = Number(req.query.offset) || 0
+  // static async searchUser(req, res) {
+  //   try {
+  //     // searchquery and pagination
+  //     const searchQuery = req.query.search
+  //     const limit = Number(req.query.limit) || 10
+  //     const offset = Number(req.query.offset) || 0
 
-      if (!searchQuery) {
-        return res.status(400).json({
-          success: false,
-          data: null,
-          message: 'Missing search query'
-        })
-      }
+  //     if (!searchQuery) {
+  //       return res.status(400).json({
+  //         success: false,
+  //         data: null,
+  //         message: 'Missing search query'
+  //       })
+  //     }
 
-      // search at User and Profile Table 
-      const { count, rows } = await User.findAndCountAll({
-        attributes: { exclude: ['password'] },
-        include: [{
-          model: Profile,
-          required: false // LEFT JOIN: include Users even its have no Profile
-        }],
-        where: {
-          [Op.or]: [
-            { email: { [Op.like]: `%${searchQuery}%` } }, // User.email
-            { '$Profile.username$': { [Op.like]: `%${searchQuery}%` } }, // Profile.username
-            { '$Profile.fullname$': { [Op.like]: `%${searchQuery}%` } }, // Profile.fullname
-          ]
-        },
-        limit,
-        offset
-      })
+  //     // search at User and Profile Table 
+  //     const { count, rows } = await User.findAndCountAll({
+  //       attributes: { exclude: ['password'] },
+  //       include: [{
+  //         model: Profile,
+  //         required: false // LEFT JOIN: include Users even its have no Profile
+  //       }],
+  //       where: {
+  //         [Op.or]: [
+  //           { email: { [Op.like]: `%${searchQuery}%` } }, // User.email
+  //           { '$Profile.username$': { [Op.like]: `%${searchQuery}%` } }, // Profile.username
+  //           { '$Profile.fullname$': { [Op.like]: `%${searchQuery}%` } }, // Profile.fullname
+  //         ]
+  //       },
+  //       limit,
+  //       offset
+  //     })
 
-      return res.status(200).json({
-        success: true,
-        data: { total: count, users: rows },
-        message: "Search complete"
-      })
-    } catch (err) {
-      return res.status(500).json({
-        success: false,
-        data: null,
-        message: err.message
-      })
-    }
-  }
+  //     return res.status(200).json({
+  //       success: true,
+  //       data: { total: count, users: rows },
+  //       message: "Search complete"
+  //     })
+  //   } catch (err) {
+  //     return res.status(500).json({
+  //       success: false,
+  //       data: null,
+  //       message: err.message
+  //     })
+  //   }
+  // }
 
   static async loginUser(req, res) {
     try {

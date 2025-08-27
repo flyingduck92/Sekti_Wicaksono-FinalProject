@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Tool.belongsTo(models.Profile, {
         foreignKey: 'ProfileId',
-        onDelete: 'SET NULL',
+        onDelete: 'SET NULL', // Tool still available, ProfileId set to NULL
         onUpdate: 'CASCADE'
       })
       Tool.belongsTo(models.Category, {

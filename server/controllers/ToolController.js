@@ -19,6 +19,10 @@ class ToolController {
     res.json({ message: 'Delete a single tool!!!' })
   }
 
+  static async searchTool(req, res) {
+    res.json({ message: 'Search tool!!!' })
+  }
+
 }
 
 module.exports = ToolController
