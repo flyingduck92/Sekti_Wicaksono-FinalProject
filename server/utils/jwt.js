@@ -1,14 +1,13 @@
 const jwt = require('jsonwebtoken')
-const secretCode = 'coursenet2025'
+const secretCode = process.env.JWT_SECRET
 
 const generateToken = (data) => {
-  const { id, username, email, image } = data
+  // store this attributes for login token
+  const { id, email, role, profileId } = data
 
+  // payload
   const token = jwt.sign(
-    {
-      // payload
-      id, username, email, image
-    },
+    { id, email, role, profileId },
     secretCode
   )
 
@@ -17,7 +16,6 @@ const generateToken = (data) => {
 
 const verifierToken = (data) => {
   const verifiedToken = jwt.verify(data, secretCode)
-
   return verifiedToken
 }
 

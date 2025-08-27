@@ -72,7 +72,7 @@ class CategoryController {
       const categoryExists = await Category.findOne({ where: { name } })
       if (categoryExists) {
         return res.status(409).json({
-          success: true,
+          success: false,
           data: null,
           message: 'Category already exists'
         })

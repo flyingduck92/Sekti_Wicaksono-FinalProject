@@ -1,16 +1,164 @@
 const { Op } = require('sequelize')
 const { Profile, User, Tool } = require('../models')
+const { encryptPwd } = require('../utils/bcrypt')
 
 class ProfileController {
   // static async addProfile(req, res) {
   //   res.json({ message: 'Add a single Profile!!!' })
   // }
 
-  // For Staff/Admin
-  static async getMyProfile(req, res) { }
-  static async updateMyProfile(req, res) { }
-  static async updateMyEmail(req, res) { }
-  static async updateMyPassword(req, res) { }
+  // For Staff/Admin (Self-services)
+  static async getMyProfile(req, res) {
+    try {
+      const profile = await Profile.findOne({
+        where: { UserId: req.user.id },
+        include: [
+          { model: User, attributes: { exclude: ['password'] } },
+          { model: Tool }
+        ]
+      })
+
+      if (!profile) {
+        return res.status(404).json({
+          success: false,
+          data: profile,
+          message: "Profile not found"
+        })
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: profile,
+        message: "Profile found"
+      })
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: err.message
+      })
+    }
+  }
+
+  static async updateMyProfile(req, res) {
+    try {
+      const { username, imageUrl, fullname, dateOfBirth } = req.body
+
+      if (username) {
+        const exists = await Profile.findOne({
+          where: { username, UserId: { [Op.ne]: req.user.id } }
+        })
+        if (exists) {
+          return res.status(409).json({
+            success: false,
+            data: null,
+            message: "Username already exists"
+          })
+        }
+      }
+
+      const profileUpdated = await Profile.update(
+        { username, imageUrl, fullname, dateOfBirth },
+        { where: { UserId: req.user.id } }
+      )
+
+      if (profileUpdated) {
+        return res.status(200).json({
+          success: true,
+          data: profileUpdated,
+          message: "Profile updated"
+        })
+      }
+
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: err.message
+      })
+    }
+  }
+
+  static async updateMyEmail(req, res) {
+    try {
+      const { email } = req.body
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          data: null,
+          message: 'Email required'
+        })
+      }
+
+      const exists = await User.findOne({
+        where: { email, id: { [Op.ne]: req.user.id } }
+      })
+      if (exists) {
+        return res.status(500).json({
+          success: false,
+          data: null,
+          message: 'Email already exists'
+        })
+      }
+
+      const updatedEmail = await User.update(
+        { email },
+        { where: { id: req.user.id } }
+      )
+
+      if (updatedEmail) {
+        return res.status(200).json({
+          success: true,
+          data: updatedEmail,
+          message: 'Email updated'
+        })
+      }
+
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: err.message
+      })
+    }
+  }
+
+  static async updateMyPassword(req, res) {
+    try {
+      const { password } = req.body
+      if (!password) {
+        return res.status(500).json({
+          success: false,
+          data: null,
+          message: 'Password required'
+        })
+      }
+
+      const encryptedPwd = await encryptPwd(password)
+
+      const updatedPassword = await User.update(
+        { password: encryptedPwd },
+        { where: { id: req.user.id } }
+      )
+
+      if (updatedPassword) {
+        return res.status(200).json({
+          success: true,
+          data: updatedPassword,
+          message: 'Password updated'
+        })
+      }
+
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: err.message
+      })
+    }
+  }
+
+
 
   // For Admin only
   static async getAllProfiles(req, res) {

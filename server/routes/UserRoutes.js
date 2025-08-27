@@ -1,15 +1,20 @@
 const UserRoutes = require('express').Router()
 const { UserController } = require('../controllers')
+const { authentication } = require('../middlewares/auth')
+const { adminOnly } = require('../middlewares/authorization')
 
-// specific routes first
-// UserRoutes.get('/search', UserController.searchUser)
+// for login and register
 UserRoutes.post('/login', UserController.loginUser)
 UserRoutes.post('/create', UserController.addUser)
-UserRoutes.put('/update/:id', UserController.updateUser)
-UserRoutes.delete('/delete/:id', UserController.deleteUser)
+
+UserRoutes.use(authentication) // protect routes from here
+
+UserRoutes.get('/search', adminOnly, UserController.searchUser)
+UserRoutes.put('/update/:id', adminOnly, UserController.updateUser)
+UserRoutes.delete('/delete/:id', adminOnly, UserController.deleteUser)
 
 // less specific routes
-UserRoutes.get('/', UserController.getAllUsers)
-UserRoutes.get('/:id', UserController.getOneUser)
+UserRoutes.get('/', adminOnly, UserController.getAllUsers)
+UserRoutes.get('/:id', adminOnly, UserController.getOneUser)
 
 module.exports = UserRoutes

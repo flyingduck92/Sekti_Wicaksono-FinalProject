@@ -61,7 +61,9 @@ class ToolController {
 
   static async addTool(req, res) {
     try {
-      const { code, name, price, stock, imageUrl, CategoryId, ProfileId } = req.body
+      const { code, name, price, stock, imageUrl, CategoryId } = req.body
+      // use authenticated user to prevent incorrect ownership
+      const ProfileId = req.user.profileId
 
       // check email exists
       let toolExists = await Tool.findOne({ where: { code } })

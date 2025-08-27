@@ -219,13 +219,25 @@ class UserController {
     try {
       const { email, password } = req.body
 
-      let userFound = await User.findOne({ where: { email } })
+      let userFound = await User.findOne({
+        where: { email },
+        include: [{ model: Profile }]
+      })
+
       if (userFound) {
         if (await decryptPwd(password, userFound.password)) {
           // valid user
           // return res.status(200).json({ message: 'Valid User!' })
 
-          const access_token = generateToken(userFound)
+          // payload for JWT
+          const payload = {
+            id: userFound.id,
+            email: userFound.email,
+            role: userFound.Profile.role, // admin or staff
+            profileId: userFound.Profile.id,
+          }
+
+          const access_token = generateToken(payload)
           return res.status(200).json({
             success: true,
             data: { access_token },
