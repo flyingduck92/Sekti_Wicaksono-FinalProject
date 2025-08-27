@@ -1,4 +1,4 @@
-const { Category } = require('../models')
+const { Category, Tool } = require('../models')
 
 class CategoryController {
   static async getAllCategories(req, res) {
@@ -8,6 +8,7 @@ class CategoryController {
       const offset = Number(req.query.offset) || 0
 
       let { count, rows } = await Category.findAndCountAll({
+        include: [{ model: Tool }],
         limit,
         offset,
         order: [['createdAt', 'DESC']]
@@ -31,7 +32,9 @@ class CategoryController {
     try {
       const id = req.params.id
 
-      let result = await Category.findByPk(id)
+      let result = await Category.findByPk(id, {
+        include: [{ model: Tool }],
+      })
       if (!result) {
         return res.status(404).json({
           success: false,
@@ -62,6 +65,16 @@ class CategoryController {
           success: false,
           data: null,
           message: 'Category name is required.'
+        })
+      }
+
+      // check if already exists
+      const categoryExists = await Category.findOne({ where: { name } })
+      if (categoryExists) {
+        return res.status(409).json({
+          success: true,
+          data: null,
+          message: 'Category already exists'
         })
       }
 
