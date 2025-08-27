@@ -30,7 +30,7 @@ class ProfileController {
 
       return res.status(200).json({
         success: true,
-        data: { total: count, users: rows },
+        data: { total: count, profiles: rows },
         message: "Profile fetch success"
       })
     } catch (err) {
@@ -167,7 +167,7 @@ class ProfileController {
 
       return res.status(200).json({
         success: true,
-        data: { total: count, users: rows },
+        data: { total: count, profiles: rows },
         message: "Search complete"
       })
     } catch (err) {
