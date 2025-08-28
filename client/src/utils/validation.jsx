@@ -1,5 +1,8 @@
 export function isEmail(value) {
-  return value.includes('@')
+  // [^\s@]+ means Accept anychars except space and @ symbol
+  // First ^ must start with string
+  // Last $ must end with string
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 }
 
 export function isNotEmpty(value) {

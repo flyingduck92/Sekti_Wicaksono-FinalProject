@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useNavigate } from 'react-router-dom'
 import Register from '../components/Register'
 import Login from '../components/Login'
 
 export default function AuthTabs() {
+  const navigate = useNavigate()
   const [isLoginPage, setIsLoginPage] = useState(true)
   const [notification, setNotification] = useState('')
 
@@ -10,6 +12,14 @@ export default function AuthTabs() {
     setIsLoginPage(true)
     setNotification(message)
   }
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/auth/home')
+    }
+
+  }, [navigate])
 
   return (
     <main className="w-full">
