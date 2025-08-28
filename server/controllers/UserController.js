@@ -2,6 +2,7 @@ const { Op } = require('sequelize')
 const { User, Profile, sequelize } = require('../models')
 const { encryptPwd, decryptPwd } = require('../utils/bcrypt')
 const { generateToken } = require('../utils/jwt')
+const bcrypt = require('bcrypt')
 
 class UserController {
   static async getAllUsers(req, res) {
@@ -80,7 +81,7 @@ class UserController {
       }
 
       // encrypt password 
-      let encrypted = await encryptPwd(password)
+      let encrypted = encryptPwd(password)
       // creat user with encrypted password
       let user = await User.create({ email, password: encrypted }, { transaction })
       // create profile
@@ -108,7 +109,7 @@ class UserController {
       const id = req.params.id
       const { email, password } = req.body
 
-      let encryptedPwd = await encryptPwd(password)
+      let encryptedPwd = encryptPwd(password)
 
       // have to be an object
       const updatedUser = {
@@ -224,8 +225,12 @@ class UserController {
         include: [{ model: Profile }]
       })
 
+      console.log('Password:', password)
+      console.log('Hash:', userFound.password)
+      console.log('Compare:', bcrypt.compareSync(password, userFound.password))
+
       if (userFound) {
-        if (await decryptPwd(password, userFound.password)) {
+        if (decryptPwd(password, userFound.password)) {
           // valid user
           // return res.status(200).json({ message: 'Valid User!' })
 
@@ -258,7 +263,7 @@ class UserController {
           message: 'Email not found!'
         })
       }
-    } catch (error) {
+    } catch (err) {
       return res.status(500).json({
         success: false,
         data: null,
