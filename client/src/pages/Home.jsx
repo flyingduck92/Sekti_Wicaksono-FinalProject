@@ -72,20 +72,23 @@ function Home() {
         decoded ? <MyProfile decoded={decoded} /> : <p>No access_token. Please login</p>
       }
       <hr />
-      <h2 className='mt-2'>User Profile</h2>
+      <h2 className='my-2 text-2xl font-bold'>My Profile</h2>
       {loading && <p>Loading profile...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
         profile && (
           <div>
-            <img className='mx-auto' src={profile.imageUrl} alt={profile.username} />
+            {profile.imageUrl
+              ? <img className='mx-auto' src={profile.imageUrl} alt={profile.username} />
+              : <img className='mx-auto' src="https://placehold.co/200x200?text=No\nImage" alt={profile.username} />
+            }
             <p><strong>Fullname: </strong>{profile.fullname}</p>
             <p><strong>Username: </strong>{profile.username}</p>
             <p><strong>Date of Birth: </strong>{profile.dateOfBirth}</p>
           </div>
         )
       }
-      <Link to='update' className='inline-block mt-4 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1'>
+      <Link to='update' className='font-bold inline-block mt-4 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1'>
         Update Profile
       </Link>
     </main>

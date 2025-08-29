@@ -8,9 +8,9 @@ import Home from '../pages/Home'
 
 import UserList from '../pages/UserList'
 import UserEdit from '../pages/UserEdit'
-import UserView from '../pages/UserView'
 
 import ProfileList from '../pages/ProfileList'
+import ProfileEdit from '../pages/ProfileEdit'
 
 import ToolList from '../pages/ToolList'
 import ToolEdit from '../pages/ToolEdit'
@@ -57,8 +57,8 @@ function AppRoutes() {
 
         <Route element={<RequireAuth allowedRoles={['admin']} />}>
           <Route path='/auth/profiles' element={<ProfileList />} />
+          <Route path='/auth/profiles/edit/:id' element={<ProfileEdit />} />
           <Route path='/auth/user' element={<UserList />} />
-          {/* <Route path='/auth/user/:id' element={<UserView />} /> */}
           <Route path='/auth/user/edit/:id' element={<UserEdit />} />
         </Route>
 

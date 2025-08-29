@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 
 function Sidebar() {
   let role = null
   let access_token = localStorage.getItem('access_token')
-  if(access_token) {
+  if (access_token) {
     try {
       const payload = jwtDecode(access_token)
       role = payload.role
@@ -13,46 +13,40 @@ function Sidebar() {
     }
   }
 
+  const linkClass = ({ isActive }) =>
+    `bg-sky-500 hover:bg-sky-500/20 hover:text-amber-200 w-full p-1 ${isActive ? 'font-bold text-yellow-200' : ''
+    }`
+
   return (
     <nav className="mt-8 size-4 w-[20%] rounded-4xl">
       <div className="flex flex-col border bg-sky-900 p-2">
-        <Link to="/auth/home"
-          className="bg-sky-500 hover:bg-sky-200  w-full p-1"
-        >
+        <NavLink to="/auth/home" className={linkClass}>
           Home
-        </Link>
-        <Link to="/auth/myemail"
-          className="bg-sky-500 hover:bg-sky-200  w-full p-1"
-        >
+        </NavLink>
+        <NavLink to="/auth/myemail" className={linkClass}>
           Update Email
-        </Link>
-        <Link to="/auth/mypassword"
-          className="bg-sky-500 hover:bg-sky-200  w-full p-1"
-        >
+        </NavLink>
+        <NavLink to="/auth/mypassword" className={linkClass}>
           Change Password
-        </Link>
-        <Link to="/auth/tool"
-          className="bg-sky-500 hover:bg-sky-200  w-full p-1"
-        >
+        </NavLink>
+        <NavLink to="/auth/tool" className={linkClass}>
           Tool List
-        </Link>
+        </NavLink>
         {
           role === 'admin' && (
             <>
-              <Link to="/auth/user" className="bg-sky-500 hover:bg-sky-200  w-full p-1">
+              <NavLink to="/auth/user" className={linkClass}>
                 User List
-              </Link>
-              <Link to="/auth/profiles" className="bg-sky-500 hover:bg-sky-200  w-full p-1">
+              </NavLink>
+              <NavLink to="/auth/profiles" className={linkClass}>
                 Profile List
-              </Link>
+              </NavLink>
             </>
           )
         }
-        <Link to="/auth/categories"
-          className="bg-sky-500 hover:bg-sky-200  w-full p-1"
-        >
+        <NavLink to="/auth/categories" className={linkClass}>
           Category
-        </Link>
+        </NavLink>
       </div>
     </nav>
   )

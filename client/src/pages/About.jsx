@@ -4,7 +4,7 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 function About() {
     // get access_token from localStorage

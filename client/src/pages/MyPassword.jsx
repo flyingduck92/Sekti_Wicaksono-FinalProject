@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useActionState } from 'react'
 import { hasMinLength, isNotEmpty } from '../utils/validation'
@@ -135,12 +135,15 @@ function MyPassword() {
       {
         profile && (
           <div className='mt-2'>
+            <h2 className='my-2 text-2xl font-bold'>Update My Password</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="password">Update password</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="password" name="password" id="password"
+                  placeholder='Fill to change your password'
                 />
+                <small className='block mt-2 font-bold text-sm text-zinc-950'>No need to fill this field if you want to keep your current password</small>
               </div>
 
               {
@@ -163,7 +166,7 @@ function MyPassword() {
                 )
               }
 
-              <button className='mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Submit Update
               </button>
             </form>

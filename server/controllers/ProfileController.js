@@ -178,7 +178,8 @@ class ProfileController {
           }
         ],
         limit,
-        offset
+        offset,
+        distinct: true
       })
 
       return res.status(200).json({
@@ -236,7 +237,7 @@ class ProfileController {
   static async updateProfile(req, res) {
     try {
       const id = req.params.id
-      const { username, imageUrl, fullname, dateOfBirth } = req.body
+      const { username, imageUrl, fullname, dateOfBirth, role } = req.body
 
       if (username) {
         // check if username already exists on others ID
@@ -258,7 +259,14 @@ class ProfileController {
         }
       }
 
+      // staff and my profile
       const updatedUser = { username, imageUrl, fullname, dateOfBirth }
+
+      //only admin can change role
+      if (role && req.user.role === 'admin') {
+        updatedUser.role = role
+      }
+
       let [result] = await Profile.update(updatedUser, { where: { id } })
       if (result === 0) {
         // if ID not found when update

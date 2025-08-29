@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useActionState } from 'react'
 import { isEmail, isNotEmpty } from '../utils/validation'
@@ -69,7 +69,6 @@ function MyEmail() {
   }
 
   /* Form Update */
-
   async function myProfileUpdateAction(prevFormState, formData) {
     const email = formData.get('email')
 
@@ -109,7 +108,7 @@ function MyEmail() {
           success: update.data?.message || 'Email updated successfully!',
           enteredValue: { email }
         }
-      } 
+      }
 
       return { errors: null }
     } catch (err) {
@@ -136,11 +135,13 @@ function MyEmail() {
       {
         profile && (
           <div className='mt-2'>
+            <h2 className='my-2 text-2xl font-bold'>Update My Email</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="email">Email</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="email" id="email"
+                  placeholder='e.g: hello@hello.net'
                   defaultValue={formState.enteredValue?.email ? formState.enteredValue?.email : profile.User.email} />
               </div>
 
@@ -152,7 +153,7 @@ function MyEmail() {
                       <li key={error}>{error}</li>
                     )
                   }
-                  
+
                 </ul>
               }
 
@@ -164,7 +165,7 @@ function MyEmail() {
                 )
               }
 
-              <button className='mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Submit Update
               </button>
             </form>

@@ -70,7 +70,7 @@ function ToolList() {
   // fetch categories
   const [categories, setCategories] = useState([])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!access_token) return
     const fetchCategories = async () => {
       try {
@@ -85,7 +85,7 @@ function ToolList() {
       }
     }
     fetchCategories()
-  },[access_token])
+  }, [access_token])
 
   //fetch tools
   const [tools, setTools] = useState([])
@@ -175,7 +175,7 @@ function ToolList() {
         return {
           errors: null,
           success: res.data?.message || 'New Tool has been added successfully!',
-          enteredValue: { code: null, name: null, price: null, stock: null, imageUrl: null, CategoryId:categories[0]?.id || ''  }
+          enteredValue: { code: null, name: null, price: null, stock: null, imageUrl: null, CategoryId: categories[0]?.id || '' }
         }
       }
 
@@ -221,11 +221,13 @@ function ToolList() {
       {
         profile && (
           <div className='mt-2'>
+            <h2 className='my-2 text-2xl font-bold'>Tool List</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="code">Tool Code</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="code" id="code"
+                  placeholder='e.g: AS-222'
                   defaultValue={formState.enteredValue?.code}
                 />
               </div>
@@ -233,6 +235,7 @@ function ToolList() {
                 <label className='block' htmlFor="name">Tool Name</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="name" id="name"
+                  placeholder='e.g: Besi Batangan 2M'
                   defaultValue={formState.enteredValue?.name}
                 />
               </div>
@@ -240,6 +243,7 @@ function ToolList() {
                 <label className='block' htmlFor="price">Price</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="price" id="price"
+                  placeholder='e.g: 35000'
                   defaultValue={formState.enteredValue?.price}
                 />
               </div>
@@ -247,6 +251,7 @@ function ToolList() {
                 <label className='block' htmlFor="stock">Stock</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="stock" id="stock"
+                  placeholder='e.g: 50'
                   defaultValue={formState.enteredValue?.stock}
                 />
               </div>
@@ -254,6 +259,7 @@ function ToolList() {
                 <label className='block' htmlFor="imageUrl">Image URL</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="imageUrl" id="imageUrl"
+                  placeholder='e.g: https://placehold.co/200'
                   defaultValue={formState.enteredValue?.imageUrl}
                 />
               </div>
@@ -265,7 +271,7 @@ function ToolList() {
                   defaultValue={formState.enteredValue?.CategoryId}
                 >
                   {
-                    categories.map(c=> (
+                    categories.map(c => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))
                   }
@@ -290,7 +296,7 @@ function ToolList() {
                 )
               }
 
-              <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Add a Tool
               </button>
             </form>
@@ -318,7 +324,7 @@ function ToolList() {
                       <td colSpan={3} className="text-center py-4">No categories found.</td>
                     </tr>
                   ) : (
-                      paginateTools.map((c, index) => {
+                    paginateTools.map((c, index) => {
                       let numbering = (currentPage - 1) * pageSize + (index + 1)
                       return (
                         <tr key={c.id}>
@@ -329,7 +335,7 @@ function ToolList() {
                           <td className="border px-4 py-2">{c.stock}</td>
                           <td className="border px-4 py-2">{c.Profile.fullname}</td>
                           <td className="border px-4 py-2">
-                            {c.imageUrl 
+                            {c.imageUrl
                               ? <img src={c.imageUrl} alt={c.code} />
                               : <img src="https://placehold.co/200x200?text=No\nImage" alt={c.code} />
                             }
@@ -393,7 +399,7 @@ function ToolList() {
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
-                className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
               >
                 Prev
               </button>
@@ -401,7 +407,7 @@ function ToolList() {
               <button
                 disabled={currentPage === totalPages || tools.length === 0}
                 onClick={() => setCurrentPage(currentPage + 1)}
-                className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
               >
                 Next
               </button>

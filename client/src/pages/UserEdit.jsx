@@ -8,7 +8,7 @@ import axios from 'axios'
 
 function UserEdit() {
   const navigate = useNavigate()
-  
+
   // get access_token from localStorage
   let access_token = localStorage.getItem('access_token')
 
@@ -73,7 +73,7 @@ function UserEdit() {
 
   useEffect(() => {
     if (!access_token) return
-    const fetchUser= async () => {
+    const fetchUser = async () => {
       try {
         const res = await axios({
           url: `http://localhost:3000/api/user/${id}`,
@@ -101,7 +101,7 @@ function UserEdit() {
     if (isNotEmpty(password) && !hasMinLength(password, 6)) {
       errors.push('Password at least six characters.')
     }
-    
+
 
     // if error 
     if (errors.length > 0) {
@@ -132,7 +132,7 @@ function UserEdit() {
         return {
           errors: null,
           success: res.data?.message || 'User has been updated successfully!',
-          enteredValue: { email, password:null }
+          enteredValue: { email, password: null }
         }
       }
 
@@ -148,7 +148,7 @@ function UserEdit() {
   }
 
   const [formState, formAction] = useActionState(myUserAction, { error: null })
-  
+
   return (
     <main>
       <h1>My Profile</h1>
@@ -161,11 +161,13 @@ function UserEdit() {
       {
         profile && (
           <div>
+            <h2 className='my-2 text-2xl font-bold'>Edit User</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="email">Email</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="email" id="email"
+                  placeholder='e.g: hello@hello.net'
                   defaultValue={formState.enteredValue?.email ? formState.enteredValue?.email : user?.email}
                 />
               </div>
@@ -173,13 +175,14 @@ function UserEdit() {
                 <label className='block' htmlFor="password">Password</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="password" name="password" id="password"
+                  placeholder='e.g: your_secret_password'
                   defaultValue={null}
-                /><br/>
+                /><br />
                 <small className='inline-block font-bold text-black'>
                   NOTE: Please leave blank if you want to keep the current password
                 </small>
               </div>
-              
+
               {
                 formState.errors &&
                 <ul className='border text-white bg-rose-500 border-rose-500 container m-4 mb-0'>
@@ -200,7 +203,7 @@ function UserEdit() {
               }
 
               <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
-                Update this User 
+                Update this User
               </button>
             </form>
 

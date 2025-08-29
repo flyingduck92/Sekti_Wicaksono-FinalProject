@@ -188,11 +188,13 @@ function CategoryList() {
       {
         profile && (
           <div className='mt-2'>
+            <h2 className='my-2 text-2xl font-bold'>Category List</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="name">Add Category Name</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="name" id="name"
+                  placeholder='e.g: Batu Alam'
                 />
               </div>
 
@@ -215,7 +217,7 @@ function CategoryList() {
                 )
               }
 
-              <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Add Category
               </button>
             </form>
@@ -277,7 +279,7 @@ function CategoryList() {
                         setShowModal(false)
                         setSelectedCategoryId(null)
                       }}
-                      className="bg-red-500 text-white px-4 py-2 rounded"
+                      className="font-bold bg-red-500 text-white px-4 py-2 rounded"
                     >
                       Yes
                     </button>
@@ -286,7 +288,7 @@ function CategoryList() {
                         setShowModal(false)
                         setSelectedCategoryId(null)
                       }}
-                      className="bg-gray-300 px-4 py-2 rounded"
+                      className="font-bold bg-gray-300 px-4 py-2 rounded"
                     >
                       No
                     </button>
@@ -301,7 +303,7 @@ function CategoryList() {
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
-                className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
               >
                 Prev
               </button>
@@ -309,7 +311,7 @@ function CategoryList() {
               <button
                 disabled={currentPage === totalPages || categories.length === 0}
                 onClick={() => setCurrentPage(currentPage + 1)}
-                className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
               >
                 Next
               </button>

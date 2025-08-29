@@ -6,65 +6,64 @@ import { hasMinLength, isEmail, isNotEmpty } from '../utils/validation'
 
 function UserList() {
   const navigate = useNavigate()
-  
-    // get access_token from localStorage
-    let access_token = localStorage.getItem('access_token')
-  
-    let [decoded, setDecoded] = useState(null)
-    let [profile, setProfile] = useState(null)
-    let [loading, setLoading] = useState(null)
-    let [error, setError] = useState(null)
-  
-    useEffect(() => {
-      if (access_token) {
-        try {
-          setDecoded(jwtDecode(access_token))
-        } catch {
-          setDecoded(null)
-        }
-      } else {
+
+  // get access_token from localStorage
+  let access_token = localStorage.getItem('access_token')
+
+  let [decoded, setDecoded] = useState(null)
+  let [profile, setProfile] = useState(null)
+  let [loading, setLoading] = useState(null)
+  let [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (access_token) {
+      try {
+        setDecoded(jwtDecode(access_token))
+      } catch {
         setDecoded(null)
       }
-    }, [access_token])
-  
-    useEffect(() => {
-      if (!access_token) return
-      setLoading(true)
-      const fetchProfile = async () => {
-        try {
-          const res = await axios({
-            url: `http://localhost:3000/api/profile/me`,
-            headers: { access_token }
-          })
-  
-          setProfile(res.data.data)
-          setLoading(false)
-        } catch (err) {
-          setError(err.response?.data?.message || 'Failed to fetch profile')
-          setLoading(false)
-        }
-      }
-  
-      //fetch profile
-      fetchProfile()
-    }, [access_token])
-  
-    if (!access_token) {
-      navigate('/')
+    } else {
+      setDecoded(null)
     }
-  
-    const MyProfile = ({ decoded }) => {
-      if (!decoded) return null
-      return (
-        <div className='flex gap-4 justify-between'>
-          <div><strong>User ID: </strong> <p>{decoded.id}</p>  </div>
-          <div><strong>Email: </strong><p>{decoded.email}</p>  </div>
-          <div><strong>Role: </strong><p>{decoded.role}</p>  </div>
-          <div><strong>Profile ID: </strong><p>{decoded.profileId}</p>  </div>
-        </div>
-      )
+  }, [access_token])
+
+  useEffect(() => {
+    if (!access_token) return
+    setLoading(true)
+    const fetchProfile = async () => {
+      try {
+        const res = await axios({
+          url: `http://localhost:3000/api/profile/me`,
+          headers: { access_token }
+        })
+
+        setProfile(res.data.data)
+        setLoading(false)
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to fetch profile')
+        setLoading(false)
+      }
     }
 
+    //fetch profile
+    fetchProfile()
+  }, [access_token])
+
+  if (!access_token) {
+    navigate('/')
+  }
+
+  const MyProfile = ({ decoded }) => {
+    if (!decoded) return null
+    return (
+      <div className='flex gap-4 justify-between'>
+        <div><strong>User ID: </strong> <p>{decoded.id}</p>  </div>
+        <div><strong>Email: </strong><p>{decoded.email}</p>  </div>
+        <div><strong>Role: </strong><p>{decoded.role}</p>  </div>
+        <div><strong>Profile ID: </strong><p>{decoded.profileId}</p>  </div>
+      </div>
+    )
+  }
 
   //fetch users
   const [users, setUsers] = useState([])
@@ -160,184 +159,192 @@ function UserList() {
       }
     }
   }
-  
+
   const [formState, formAction] = useActionState(addUserAction, { error: null })
-  
-    // Modal 
-    const [showModal, setShowModal] = useState(false)
-    const [selectedUserId, setSelectedUserId] = useState(null)
-  
-    const deleteUserHandler = async (id) => {
-      try {
-        await axios({
-          url: `http://localhost:3000/api/user/delete/${id}`,
-          method: 'DELETE',
-          headers: { access_token }
-        })
-        await fetchTools.current(currentPage, pageSize)
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to delete')
-      }
+
+  // Modal 
+  const [showModal, setShowModal] = useState(false)
+  const [selectedUserId, setSelectedUserId] = useState(null)
+
+  const deleteUserHandler = async (id) => {
+    try {
+      await axios({
+        url: `http://localhost:3000/api/user/delete/${id}`,
+        method: 'DELETE',
+        headers: { access_token }
+      })
+      await fetchTools.current(currentPage, pageSize)
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete')
     }
-  
-    return (
-      <main>
-        <h1>My Profile</h1>
-        {
-          decoded ? <MyProfile decoded={decoded} /> : <p>No access_token. Please login</p>
-        }
-        <hr />
-        {loading && <p>Loading profile...</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {
-          profile && (
-            <div className='mt-2'>
-              <form action={formAction}>
-                <div>
-                  <label className='block' htmlFor="email">Email</label>
-                  <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                    type="text" name="email" id="email"
-                    defaultValue={formState.enteredValue?.email}
-                  />
-                </div>
-                <div>
-                  <label className='block' htmlFor="password">Password</label>
-                  <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                    type="password" name="password" id="password"
-                    defaultValue={formState.enteredValue?.password}
-                  />
-                </div>
-                <h2 className='mt-2 text-sm font-bold'>You may update or delete Email/Password of other users via action button in the table</h2>
-                <h2 className='mt-1 text-sm font-bold'>Also you may add a new User here, it will automatically create the Profile that related to the new User</h2>
-                                
-                {
-                  formState.errors &&
-                  <ul className='border text-white bg-rose-500 border-rose-500 container m-4 mb-0'>
-                    {
-                      formState.errors.map(error =>
-                        <li key={error}>{error}</li>
-                      )
-                    }
-                  </ul>
-                }
-  
-                {
-                  formState.success && (
-                    <div className="border text-white bg-green-600 border-green-600 container m-4 mb-0 p-2">
-                      {formState.success}
-                    </div>
-                  )
-                }
-  
-                <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
-                  Add a Tool
-                </button>
-              </form>
-  
-              {/* Table List */}
-              <p className='mt-4'>Total: {total}</p>
-              <table className="mt-4 min-w-full border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="border px-4 py-2">No.</th>
-                    <th className="border px-4 py-2">Email</th>
-                    <th className="border px-4 py-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
+  }
+
+  return (
+    <main>
+      <h1>My Profile</h1>
+      {
+        decoded ? <MyProfile decoded={decoded} /> : <p>No access_token. Please login</p>
+      }
+      <hr />
+      {loading && <p>Loading profile...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {
+        profile && (
+          <div className='mt-2'>
+            <h2 className='my-2 text-2xl font-bold'>User List</h2>
+            <form action={formAction}>
+              <div>
+                <label className='block' htmlFor="email">Email</label>
+                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
+                  type="text" name="email" id="email"
+                  placeholder='e.g: hello@hello.net'
+                  defaultValue={formState.enteredValue?.email}
+                />
+              </div>
+              <div>
+                <label className='block' htmlFor="password">Password</label>
+                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
+                  type="password" name="password" id="password"
+                  placeholder='e.g: your_secret_password'
+                  defaultValue={formState.enteredValue?.password}
+                />
+              </div>
+              <h2 className='mt-2 text-sm font-bold'>You may update or delete Email/Password of other users via action button in the table</h2>
+              <h2 className='mt-1 text-sm font-bold'>Also you may add a new User here, it will automatically create the Profile that related to the new User</h2>
+              <h2 className='mt-1 text-sm font-bold'>Role can be modified from Profile List</h2>
+
+              {
+                formState.errors &&
+                <ul className='border text-white bg-rose-500 border-rose-500 container m-4 mb-0'>
                   {
-                    paginateUsers.length === 0 ? (
-                      <tr>
-                        <td colSpan={3} className="text-center py-4">No categories found.</td>
-                      </tr>
-                    ) : (
-                        paginateUsers.map((c, index) => {
-                        let numbering = (currentPage - 1) * pageSize + (index + 1)
-                        return (
-                          <tr key={c.id}>
-                            <td className="border px-4 py-2">{numbering}</td>
-                            <td className="border px-4 py-2">{c.email}</td>
-                            <td className="border px-4 py-2">
-                              {
-                                (c.email !== decoded.email) && <>
-                                  <Link
-                                    to={`/auth/user/edit/${c.id}`}
-                                    className="cursor-pointer bg-blue-500 text-white px-2 py-1 mr-2 rounded inline-block"
-                                  >
-                                    Edit
-                                  </Link>
-                                  <button onClick={() => {
-                                    setSelectedUserId(c.id)
-                                    setShowModal(true)
-                                  }} className="cursor-pointer bg-red-500 text-white px-2 py-1 rounded">
-                                    Delete
-                                  </button>
-                                </> 
-                              }
-                            </td>
-                          </tr>
-                        )
-                      })
+                    formState.errors.map(error =>
+                      <li key={error}>{error}</li>
                     )
                   }
-                </tbody>
-              </table>
-  
-              {/* MODAL START*/}
-              {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
-                  <div className="bg-white p-6 rounded shadow-lg">
-                    <p>Are you sure you want to delete this?</p>
-                    <div className="flex gap-4 mt-4">
-                      <button
-                        onClick={async () => {
-                          await deleteUserHandler(selectedUserId)
-                          setShowModal(false)
-                          setSelectedUserId(null)
-                        }}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
-                      >
-                        Yes
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowModal(false)
-                          setSelectedUserId(null)
-                        }}
-                        className="bg-gray-300 px-4 py-2 rounded"
-                      >
-                        No
-                      </button>
-                    </div>
+                </ul>
+              }
+
+              {
+                formState.success && (
+                  <div className="border text-white bg-green-600 border-green-600 container m-4 mb-0 p-2">
+                    {formState.success}
+                  </div>
+                )
+              }
+
+              <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+                Add a Tool
+              </button>
+            </form>
+
+            {/* Table List */}
+            <p className='mt-4'>Total: {total}</p>
+            <table className="mt-4 min-w-full border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border px-4 py-2">No.</th>
+                  <th className="border px-4 py-2">Email</th>
+                  <th className="border px-4 py-2">Username</th>
+                  <th className="border px-4 py-2">Role</th>
+                  <th className="border px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  paginateUsers.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="text-center py-4">No categories found.</td>
+                    </tr>
+                  ) : (
+                    paginateUsers.map((c, index) => {
+                      let numbering = (currentPage - 1) * pageSize + (index + 1)
+                      return (
+                        <tr key={c.id}>
+                          <td className="border px-4 py-2">{numbering}</td>
+                          <td className="border px-4 py-2">{c.email}</td>
+                          <td className="border px-4 py-2">{c.Profile.username ? c.Profile.name : 'No Username'}</td>
+                          <td className="border px-4 py-2">{c.Profile.role}</td>
+                          <td className="border px-4 py-2">
+                            {
+                              (c.email !== decoded.email) && <>
+                                <Link
+                                  to={`/auth/user/edit/${c.id}`}
+                                  className="cursor-pointer bg-blue-500 text-white px-2 py-1 mr-2 rounded inline-block"
+                                >
+                                  Edit
+                                </Link>
+                                <button onClick={() => {
+                                  setSelectedUserId(c.id)
+                                  setShowModal(true)
+                                }} className="cursor-pointer bg-red-500 text-white px-2 py-1 rounded">
+                                  Delete
+                                </button>
+                              </>
+                            }
+                          </td>
+                        </tr>
+                      )
+                    })
+                  )
+                }
+              </tbody>
+            </table>
+
+            {/* MODAL START*/}
+            {showModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
+                <div className="bg-white p-6 rounded shadow-lg">
+                  <p>Are you sure you want to delete this?</p>
+                  <div className="flex gap-4 mt-4">
+                    <button
+                      onClick={async () => {
+                        await deleteUserHandler(selectedUserId)
+                        setShowModal(false)
+                        setSelectedUserId(null)
+                      }}
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowModal(false)
+                        setSelectedUserId(null)
+                      }}
+                      className="bg-gray-300 px-4 py-2 rounded"
+                    >
+                      No
+                    </button>
                   </div>
                 </div>
-              )}
-              {/* MODAL END */}
-  
-              {/* pagination control */}
-              <div className="flex gap-2 mt-2">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
-                >
-                  Prev
-                </button>
-                <span>Page {currentPage} of {totalPages}</span>
-                <button
-                  disabled={currentPage === totalPages || users.length === 0}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  className="px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
-                >
-                  Next
-                </button>
               </div>
-  
+            )}
+            {/* MODAL END */}
+
+            {/* pagination control */}
+            <div className="flex gap-2 mt-2">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+              >
+                Prev
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button
+                disabled={currentPage === totalPages || users.length === 0}
+                onClick={() => setCurrentPage(currentPage + 1)}
+                className="font-bold px-2 py-1 bg-gray-300 rounded disabled:opacity-50 cursor-pointer"
+              >
+                Next
+              </button>
             </div>
-          )
-        }
-      </main>
-    )
+
+          </div>
+        )
+      }
+    </main>
+  )
 }
 
 export default UserList

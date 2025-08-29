@@ -91,7 +91,7 @@ function ToolEdit() {
   // fetch categories
   const [categories, setCategories] = useState([])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!access_token) return
     const fetchCategories = async () => {
       try {
@@ -106,7 +106,7 @@ function ToolEdit() {
       }
     }
     fetchCategories()
-  },[access_token])
+  }, [access_token])
 
   /* Form Update */
   async function myToolAction(prevFormState, formData) {
@@ -159,7 +159,7 @@ function ToolEdit() {
         return {
           errors: null,
           success: res.data?.message || 'Tool has been updated successfully!',
-          enteredValue: { code, name, price, stock, imageUrl, CategoryId  }
+          enteredValue: { code, name, price, stock, imageUrl, CategoryId }
         }
       }
 
@@ -188,11 +188,13 @@ function ToolEdit() {
       {
         profile && (
           <div>
+            <h2 className='my-2 text-2xl font-bold'>Edit Tool</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="code">Tool Code</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="code" id="code"
+                  placeholder='e.g: AS-222'
                   defaultValue={formState.enteredValue?.code ? formState.enteredValue?.code : tool?.code}
                 />
               </div>
@@ -200,6 +202,7 @@ function ToolEdit() {
                 <label className='block' htmlFor="name">Tool Name</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="name" id="name"
+                  placeholder='e.g: Besi Batangan 2M'
                   defaultValue={formState.enteredValue?.name ? formState.enteredValue?.name : tool?.name}
                 />
               </div>
@@ -207,6 +210,7 @@ function ToolEdit() {
                 <label className='block' htmlFor="price">Price</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="price" id="price"
+                  placeholder='e.g: 35000'
                   defaultValue={formState.enteredValue?.price ? formState.enteredValue?.price : tool?.price}
                 />
               </div>
@@ -214,6 +218,7 @@ function ToolEdit() {
                 <label className='block' htmlFor="stock">Stock</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="stock" id="stock"
+                  placeholder='e.g: 50'
                   defaultValue={formState.enteredValue?.stock ? formState.enteredValue?.stock : tool?.stock}
                 />
               </div>
@@ -221,6 +226,7 @@ function ToolEdit() {
                 <label className='block' htmlFor="imageUrl">Image URL</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="imageUrl" id="imageUrl"
+                  placeholder='e.g: https://placehold.co/200'
                   defaultValue={formState.enteredValue?.imageUrl ? formState.enteredValue?.imageUrl : tool?.imageUrl}
                 />
               </div>
@@ -232,7 +238,7 @@ function ToolEdit() {
                   defaultValue={formState.enteredValue?.CategoryId ? formState.enteredValue?.CategoryId : tool?.CategoryId}
                 >
                   {
-                    categories.map(c=> (
+                    categories.map(c => (
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))
                   }
@@ -251,13 +257,13 @@ function ToolEdit() {
 
               {
                 formState.success && (
-                  <div className="border text-white bg-green-600 border-green-600 container m-4 mb-0 p-2">
+                  <div className="font-bold border text-white bg-green-600 border-green-600 container m-4 mb-0 p-2">
                     {formState.success}
                   </div>
                 )
               }
 
-              <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Update a Tool
               </button>
             </form>

@@ -87,9 +87,10 @@ function CategoryEdit() {
     fetchCategory()
   }, [access_token, id])
 
-  async function myProfileUpdateAction(prevFormState, formData) {
+  // Category Form Update
+  async function myCategoryUpdateAction(prevFormState, formData) {
     const name = formData.get('name')
-    
+
     const errors = []
     if (!isNotEmpty(name) || !hasMinLength(name, 6)) {
       errors.push('Category name at least six characters.')
@@ -136,7 +137,7 @@ function CategoryEdit() {
     }
   }
 
-  const [formState, formAction] = useActionState(myProfileUpdateAction, { error: null })
+  const [formState, formAction] = useActionState(myCategoryUpdateAction, { error: null })
 
   return (
     <main>
@@ -150,12 +151,16 @@ function CategoryEdit() {
       {
         profile && (
           <div>
+            <h2 className='my-2 text-2xl font-bold'>Category Edit</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="name">Category Name</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
                   type="text" name="name" id="name"
-                  defaultValue={formState.enteredValue?.name ? formState.enteredValue?.name : category } />
+                  placeholder='e.g: Batu Alam'
+                  defaultValue={formState.enteredValue?.name
+                    ? formState.enteredValue?.name
+                    : category} />
               </div>
 
               {
@@ -178,7 +183,7 @@ function CategoryEdit() {
                 )
               }
 
-              <button className='mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button className='font-bold mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Submit Update
               </button>
             </form>
