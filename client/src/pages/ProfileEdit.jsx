@@ -7,11 +7,14 @@ import { useActionState } from 'react'
 import { hasMinLength, isNotEmpty } from '../utils/validation'
 
 function ProfileEdit() {
-
+  // if no access token go to /
   const navigate = useNavigate()
-
-  // get access_token from localStorage
   let access_token = localStorage.getItem('access_token')
+  useEffect(() => {
+    if (!access_token) {
+      navigate('/')
+    }
+  }, [access_token, navigate])
 
   let [decoded, setDecoded] = useState(null)
   let [profile, setProfile] = useState(null)
@@ -51,10 +54,6 @@ function ProfileEdit() {
     //fetch profile
     fetchProfile()
   }, [access_token])
-
-  if (!access_token) {
-    navigate('/')
-  }
 
   const MyProfile = ({ decoded }) => {
     if (!decoded) return null
