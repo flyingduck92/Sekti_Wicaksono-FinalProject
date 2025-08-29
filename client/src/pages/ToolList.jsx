@@ -6,7 +6,6 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useActionState } from 'react'
 import { hasMinLength, isNotEmpty } from '../utils/validation'
 
-
 function ToolList() {
   const navigate = useNavigate()
 
@@ -197,7 +196,7 @@ function ToolList() {
   const [showModal, setShowModal] = useState(false)
   const [selectedToolId, setSelectedToolId] = useState(null)
 
-  const deleteCategoryHandler = async (id) => {
+  const deleteToolHandler = async (id) => {
     try {
       await axios({
         url: `http://localhost:3000/api/tool/delete/${id}`,
@@ -321,7 +320,6 @@ function ToolList() {
                   ) : (
                       paginateTools.map((c, index) => {
                       let numbering = (currentPage - 1) * pageSize + (index + 1)
-                        console.log(categories)
                       return (
                         <tr key={c.id}>
                           <td className="border px-4 py-2">{numbering}</td>
@@ -331,7 +329,10 @@ function ToolList() {
                           <td className="border px-4 py-2">{c.stock}</td>
                           <td className="border px-4 py-2">{c.Profile.fullname}</td>
                           <td className="border px-4 py-2">
-                            <img src={c.imageUrl} alt={c.code} />
+                            {c.imageUrl 
+                              ? <img src={c.imageUrl} alt={c.code} />
+                              : <img src="https://placehold.co/200x200?text=No\nImage" alt={c.code} />
+                            }
                           </td>
                           <td className="border px-4 py-2">
                             {categories.find(cat => cat.id === c.CategoryId)?.name}
@@ -364,7 +365,7 @@ function ToolList() {
                   <div className="flex gap-4 mt-4">
                     <button
                       onClick={async () => {
-                        await deleteCategoryHandler(selectedToolId)
+                        await deleteToolHandler(selectedToolId)
                         setShowModal(false)
                         setSelectedToolId(null)
                       }}

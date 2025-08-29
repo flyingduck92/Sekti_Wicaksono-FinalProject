@@ -9,6 +9,7 @@ import UserList from '../pages/UserList'
 import ProfileList from '../pages/ProfileList'
 
 import ToolList from '../pages/ToolList'
+import ToolEdit from '../pages/ToolEdit'
 
 import CategoryList from '../pages/CategoryList'
 import CategoryEdit from '../pages/CategoryEdit'
@@ -48,6 +49,7 @@ function AppRoutes() {
         <Route path='/auth/mypassword' element={<MyPassword />} />
 
         <Route path='/auth/tool' element={<ToolList />} />
+        <Route path='/auth/tool/edit/:id' element={<ToolEdit />} />
 
         <Route element={<RequireAuth allowedRoles={['admin']} />}>
           <Route path='/auth/user' element={<UserList />} />
@@ -55,7 +57,7 @@ function AppRoutes() {
         </Route>
 
         <Route path='/auth/categories' element={<CategoryList />} />
-        <Route path={`/auth/categories/edit/:id`} element={<CategoryEdit />} />
+        <Route path='/auth/categories/edit/:id' element={<CategoryEdit />} />
       </Route>
 
     </Routes>

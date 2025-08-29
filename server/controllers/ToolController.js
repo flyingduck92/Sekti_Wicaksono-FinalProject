@@ -96,6 +96,22 @@ class ToolController {
       const id = req.params.id
       const { code, name, price, stock, imageUrl, CategoryId, ProfileId } = req.body
 
+      // checking code to others id
+      const existingTool = await Tool.findOne({ 
+        where: { 
+          code, 
+          id: { [Op.ne]: id } 
+        } 
+      })
+      // if belongs to other ID, say already exists
+      if (existingTool) {
+        return res.status(409).json({
+          success: false,
+          data: null,
+          message: 'Tool code already exists.'
+        })
+      }
+
       const updatedUser = {
         code, name, price, stock, imageUrl, CategoryId, ProfileId
       }
