@@ -89,8 +89,8 @@ function MyEmail() {
     }
 
     let dataEntered = { email }
-    console.log(dataEntered)
-    console.log(errors)
+    // console.log(dataEntered)
+    // console.log(errors)
 
     try {
       // if okay send to backend
@@ -135,7 +135,7 @@ function MyEmail() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
         profile && (
-          <div>
+          <div className='mt-2'>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="email">Email</label>

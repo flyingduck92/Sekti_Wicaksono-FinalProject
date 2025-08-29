@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 
-// import Sidebar from '../components/Sidebar'
-
 function Home() {
   const navigate = useNavigate()
 
@@ -34,6 +32,7 @@ function Home() {
     const fetchProfile = async () => {
       try {
         const res = await axios({
+          method: 'GET',
           url: `http://localhost:3000/api/profile/me`,
           headers: { access_token }
         })
@@ -73,7 +72,7 @@ function Home() {
         decoded ? <MyProfile decoded={decoded} /> : <p>No access_token. Please login</p>
       }
       <hr />
-      <h2>User Profile</h2>
+      <h2 className='mt-2'>User Profile</h2>
       {loading && <p>Loading profile...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {

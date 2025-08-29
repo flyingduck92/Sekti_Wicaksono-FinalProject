@@ -15,7 +15,8 @@ class UserController {
         attributes: { exclude: ['password'] }, // remove attr password
         include: [Profile],
         limit,
-        offset
+        offset,
+        order: [['createdAt', 'DESC']]
       })
 
       return res.status(200).json({
@@ -109,12 +110,11 @@ class UserController {
       const id = req.params.id
       const { email, password } = req.body
 
-      let encryptedPwd = encryptPwd(password)
+      const updatedUser = {email}
 
-      // have to be an object
-      const updatedUser = {
-        email,
-        password: encryptedPwd
+      // password is optional update
+      if(password) {
+        updatedUser.password = encryptPwd(password)
       }
 
       let [result] = await User.update(updatedUser, { where: { id } })
@@ -233,9 +233,9 @@ class UserController {
         })
       }
 
-      console.log('Password:', password)
-      console.log('Hash:', userFound.password)
-      console.log('Compare:', bcrypt.compareSync(password, userFound.password))
+      // console.log('Password:', password)
+      // console.log('Hash:', userFound.password)
+      // console.log('Compare:', bcrypt.compareSync(password, userFound.password))
 
       if (userFound) {
         if (decryptPwd(password, userFound.password)) {

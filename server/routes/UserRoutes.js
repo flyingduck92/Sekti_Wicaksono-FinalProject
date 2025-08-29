@@ -7,26 +7,26 @@ const { adminOnly } = require('../middlewares/authorization')
 UserRoutes.post('/login', UserController.loginUser)
 UserRoutes.post('/create', UserController.addUser)
 
-// UserRoutes.use(authentication) // protect routes from here
+UserRoutes.use(authentication) // protect routes from here
 
-// // Admin Only
+// Admin Only
 // UserRoutes.get('/search', adminOnly, UserController.searchUser)
-// UserRoutes.put('/update/:id', adminOnly, UserController.updateUser)
-// UserRoutes.delete('/delete/:id', adminOnly, UserController.deleteUser)
+UserRoutes.post('/add', UserController.addUser)
+UserRoutes.put('/update/:id', adminOnly, UserController.updateUser)
+UserRoutes.delete('/delete/:id', adminOnly, UserController.deleteUser)
 
-// // less specific routes
-// UserRoutes.get('/', adminOnly, UserController.getAllUsers)
-// UserRoutes.get('/:id', adminOnly, UserController.getOneUser)
-
+// less specific routes
+UserRoutes.get('/', adminOnly, UserController.getAllUsers)
+UserRoutes.get('/:id', adminOnly, UserController.getOneUser)
 
 // Admin Only
 // /api/user/update
 // UserRoutes.get('/search', UserController.searchUser)
-UserRoutes.put('/update/:id', UserController.updateUser)
-UserRoutes.delete('/delete/:id', UserController.deleteUser)
+// UserRoutes.put('/update/:id', UserController.updateUser)
+// UserRoutes.delete('/delete/:id', UserController.deleteUser)
 
 // less specific routes
-UserRoutes.get('/', UserController.getAllUsers)
-UserRoutes.get('/:id', UserController.getOneUser)
+// UserRoutes.get('/', UserController.getAllUsers)
+// UserRoutes.get('/:id', UserController.getOneUser)
 
 module.exports = UserRoutes

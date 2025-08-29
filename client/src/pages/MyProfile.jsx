@@ -143,7 +143,7 @@ function MyProfile() {
       {
 
         profile && (
-          <div>
+          <div className='mt-4'>
             <img className='mx-auto' src={profile.imageUrl} alt={profile.username} />
             <form action={formAction}>
               <div>

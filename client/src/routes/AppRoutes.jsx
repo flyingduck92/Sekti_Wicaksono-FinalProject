@@ -5,7 +5,11 @@ import NotFound from '../pages/NotFound'
 import AuthTabs from '../pages/AuthTabs'
 import MainLayout from '../components/MainLayout'
 import Home from '../pages/Home'
+
 import UserList from '../pages/UserList'
+import UserEdit from '../pages/UserEdit'
+import UserView from '../pages/UserView'
+
 import ProfileList from '../pages/ProfileList'
 
 import ToolList from '../pages/ToolList'
@@ -52,8 +56,10 @@ function AppRoutes() {
         <Route path='/auth/tool/edit/:id' element={<ToolEdit />} />
 
         <Route element={<RequireAuth allowedRoles={['admin']} />}>
-          <Route path='/auth/user' element={<UserList />} />
           <Route path='/auth/profiles' element={<ProfileList />} />
+          <Route path='/auth/user' element={<UserList />} />
+          {/* <Route path='/auth/user/:id' element={<UserView />} /> */}
+          <Route path='/auth/user/edit/:id' element={<UserEdit />} />
         </Route>
 
         <Route path='/auth/categories' element={<CategoryList />} />

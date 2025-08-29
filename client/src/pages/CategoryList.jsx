@@ -187,7 +187,7 @@ function CategoryList() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
         profile && (
-          <div>
+          <div className='mt-2'>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="name">Add Category Name</label>

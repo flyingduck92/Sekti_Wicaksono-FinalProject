@@ -220,7 +220,7 @@ function ToolList() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
         profile && (
-          <div>
+          <div className='mt-2'>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="code">Tool Code</label>
@@ -296,7 +296,7 @@ function ToolList() {
             </form>
 
             {/* Table List */}
-            <p>Total: {total}</p>
+            <p className='mt-4'>Total: {total}</p>
             <table className="mt-4 min-w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-200">
@@ -325,7 +325,7 @@ function ToolList() {
                           <td className="border px-4 py-2">{numbering}</td>
                           <td className="border px-4 py-2">{c.code}</td>
                           <td className="border px-4 py-2">{c.name}</td>
-                          <td className="border px-4 py-2">{c.price}</td>
+                          <td className="border px-4 py-2">Rp. {c.price.toLocaleString('id')}</td>
                           <td className="border px-4 py-2">{c.stock}</td>
                           <td className="border px-4 py-2">{c.Profile.fullname}</td>
                           <td className="border px-4 py-2">
@@ -361,7 +361,7 @@ function ToolList() {
             {showModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
                 <div className="bg-white p-6 rounded shadow-lg">
-                  <p>Are you sure you want to delete this category?</p>
+                  <p>Are you sure you want to delete this?</p>
                   <div className="flex gap-4 mt-4">
                     <button
                       onClick={async () => {

@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 function MainLayout() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen min-w-[95%]">
       <Navbar />
       <article className="flex gap-4">
         <Sidebar />

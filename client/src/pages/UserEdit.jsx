@@ -1,15 +1,14 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useActionState } from 'react'
-import { hasMinLength, isNotEmpty } from '../utils/validation'
+import { isEmail, isNotEmpty, hasMinLength } from '../utils/validation'
+import axios from 'axios'
 
-
-function MyPassword() {
+function UserEdit() {
   const navigate = useNavigate()
-
+  
   // get access_token from localStorage
   let access_token = localStorage.getItem('access_token')
 
@@ -68,45 +67,72 @@ function MyPassword() {
     )
   }
 
-  /* Form Update */
+  // fetch current ID
+  const { id } = useParams()
+  const [user, setUser] = useState(null)
 
-  async function myProfileUpdateAction(prevFormState, formData) {
+  useEffect(() => {
+    if (!access_token) return
+    const fetchUser= async () => {
+      try {
+        const res = await axios({
+          url: `http://localhost:3000/api/user/${id}`,
+          headers: { access_token }
+        })
+        setUser(res.data.data) // adjust if your backend returns differently
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to fetch tool')
+      }
+    }
+    fetchUser()
+  }, [access_token, id])
+
+  /* Form Update */
+  async function myUserAction(prevFormState, formData) {
+    const email = formData.get('email')
     const password = formData.get('password')
 
     const errors = []
-    if (!isNotEmpty(password) || !hasMinLength(password, 6)) {
+    if (!isNotEmpty(email) || !isEmail(email)) {
+      errors.push('Invalid email address.')
+    }
+
+    // only validate if password not empty
+    if (isNotEmpty(password) && !hasMinLength(password, 6)) {
       errors.push('Password at least six characters.')
     }
+    
 
     // if error 
     if (errors.length > 0) {
       return {
         errors,
         success: null,
-        enteredValue: { password }
+        enteredValue: { email, password }
       }
     }
 
-    let dataEntered = { password }
-    console.log(dataEntered)
-    console.log(errors)
+    // include password if not empty
+    let dataEntered = { email }
+    if (isNotEmpty(password)) {
+      dataEntered.password = password
+    }
 
     try {
       // if okay send to backend
-      // http://localhost:3000/api/profile/update/c808c20b-9a3d-4af6-a704-fe9d0f57f1aa
+      // http://localhost:3000/api/tool/create
       // and set error to null
-      const update = await axios({
-        url: `http://localhost:3000/api/profile/me/password/${profile?.id}`,
+      const res = await axios({
+        url: `http://localhost:3000/api/user/update/${id}`,
         method: 'PUT',
         data: dataEntered,
         headers: { access_token }
       })
-
-      if (update && update.data && update.data.message) {
+      if (res && res.data && res.data.message) {
         return {
           errors: null,
-          success: update.data?.message || 'Password updated successfully!',
-          enteredValue: { password }
+          success: res.data?.message || 'User has been updated successfully!',
+          enteredValue: { email, password:null }
         }
       }
 
@@ -116,13 +142,13 @@ function MyPassword() {
         errors: [
           err.response?.data?.message || 'Failed to update'
         ],
-        enteredValue: { password }
+        enteredValue: { email, password }
       }
     }
   }
 
-  const [formState, formAction] = useActionState(myProfileUpdateAction, { error: null })
-
+  const [formState, formAction] = useActionState(myUserAction, { error: null })
+  
   return (
     <main>
       <h1>My Profile</h1>
@@ -134,15 +160,26 @@ function MyPassword() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
         profile && (
-          <div className='mt-2'>
+          <div>
             <form action={formAction}>
               <div>
-                <label className='block' htmlFor="password">Update password</label>
+                <label className='block' htmlFor="email">Email</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                  type="password" name="password" id="password"
+                  type="text" name="email" id="email"
+                  defaultValue={formState.enteredValue?.email ? formState.enteredValue?.email : user?.email}
                 />
               </div>
-
+              <div>
+                <label className='block' htmlFor="password">Password</label>
+                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
+                  type="password" name="password" id="password"
+                  defaultValue={null}
+                /><br/>
+                <small className='inline-block font-bold text-black'>
+                  NOTE: Please leave blank if you want to keep the current password
+                </small>
+              </div>
+              
               {
                 formState.errors &&
                 <ul className='border text-white bg-rose-500 border-rose-500 container m-4 mb-0'>
@@ -151,7 +188,6 @@ function MyPassword() {
                       <li key={error}>{error}</li>
                     )
                   }
-
                 </ul>
               }
 
@@ -163,10 +199,11 @@ function MyPassword() {
                 )
               }
 
-              <button className='mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
-                Submit Update
+              <button className='mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+                Update this User 
               </button>
             </form>
+
           </div>
         )
       }
@@ -174,4 +211,4 @@ function MyPassword() {
   )
 }
 
-export default MyPassword
+export default UserEdit

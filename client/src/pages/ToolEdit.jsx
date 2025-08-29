@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useActionState } from 'react'
 import { hasMinLength, isNotEmpty } from '../utils/validation'
