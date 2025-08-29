@@ -9,6 +9,7 @@ class CategoryController {
 
       let { count, rows } = await Category.findAndCountAll({
         include: [{ model: Tool }],
+        distinct: true,
         limit,
         offset,
         order: [['createdAt', 'DESC']]
@@ -18,6 +19,25 @@ class CategoryController {
         success: true,
         data: { total: count, categories: rows },
         message: "Category fetch success"
+      })
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: err.message
+      })
+    }
+  }
+
+  static async getAllCategoriesNoPaginate(req, res) {
+    try {
+      let categories = await Category.findAll({
+        order: [['createdAt', 'DESC']]
+      })
+      return res.status(200).json({
+        success: true,
+        data: categories,
+        message: "All categories fetch success"
       })
     } catch (err) {
       return res.status(500).json({

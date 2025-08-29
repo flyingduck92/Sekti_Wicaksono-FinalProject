@@ -70,7 +70,7 @@ function CategoryList() {
 
   //fetch  categories
   const [categories, setCategories] = useState([])
-  const [total,setTotal] = useState(0)
+  const [total, setTotal] = useState(0)
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1)
@@ -85,9 +85,9 @@ function CategoryList() {
     }
   }, [categories, totalPages, currentPage])
 
-  const fetchCategories = useRef(async (page=1,pageSize=10)=> {
+  const fetchCategories = useRef(async (page = 1, pageSize = 10) => {
     try {
-      const offset = (page-1) * pageSize
+      const offset = (page - 1) * pageSize
       const res = await axios({
         url: `http://localhost:3000/api/category?limit=${pageSize}&offset=${offset}`,
         method: 'GET',
@@ -100,11 +100,11 @@ function CategoryList() {
     }
   })
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!access_token) {
-      navigate('/') 
+      navigate('/')
     }
-    fetchCategories.current(currentPage,pageSize)
+    fetchCategories.current(currentPage, pageSize)
   }, [access_token, currentPage, pageSize, navigate])
 
   /* Form Add */
@@ -163,16 +163,16 @@ function CategoryList() {
   const [showModal, setShowModal] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
 
-  const deleteCategoryHandler = async (id)=> {
+  const deleteCategoryHandler = async (id) => {
     try {
       await axios({
         url: `http://localhost:3000/api/category/delete/${id}`,
         method: 'DELETE',
         headers: { access_token }
       })
-      await fetchCategories.current(currentPage,pageSize)
+      await fetchCategories.current(currentPage, pageSize)
     } catch (err) {
-      setError(err.response?.data?.message ||'Failed to delete')
+      setError(err.response?.data?.message || 'Failed to delete')
     }
   }
 
@@ -237,8 +237,8 @@ function CategoryList() {
                     <tr>
                       <td colSpan={3} className="text-center py-4">No categories found.</td>
                     </tr>
-                  ): (
-                    paginateCategories.map((c,index) => { 
+                  ) : (
+                    paginateCategories.map((c, index) => {
                       let numbering = (currentPage - 1) * pageSize + (index + 1)
                       return (
                         <tr key={c.id}>
@@ -258,7 +258,8 @@ function CategoryList() {
                             }} className="cursor-pointer bg-red-500 text-white px-2 py-1 rounded">Delete</button>
                           </td>
                         </tr>
-                      )})
+                      )
+                    })
                   )
                 }
               </tbody>

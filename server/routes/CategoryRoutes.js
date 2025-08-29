@@ -5,6 +5,7 @@ const { authentication } = require('../middlewares/auth')
 CategoryRoutes.use(authentication) // protect routes from here
 
 // /api/category/create
+CategoryRoutes.get('/all', CategoryController.getAllCategoriesNoPaginate)
 CategoryRoutes.post('/create', CategoryController.addCategory)
 CategoryRoutes.put('/update/:id', CategoryController.updateCategory)
 CategoryRoutes.delete('/delete/:id', CategoryController.deleteCategory)

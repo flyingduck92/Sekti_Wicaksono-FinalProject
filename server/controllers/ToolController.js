@@ -65,7 +65,7 @@ class ToolController {
       // use authenticated user to prevent incorrect ownership
       const ProfileId = req.user.profileId
 
-      // check email exists
+      // check code exists
       let toolExists = await Tool.findOne({ where: { code } })
       if (toolExists) {
         return res.status(409).json({
