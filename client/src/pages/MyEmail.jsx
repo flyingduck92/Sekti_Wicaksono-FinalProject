@@ -135,7 +135,7 @@ function MyEmail() {
       {
         profile && (
           <div className='mt-2'>
-            <h2 className='my-2 text-2xl font-bold'>Update My Email</h2>
+            <h2 className='my-2 text-2xl font-bold'>Update MyEmail</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="email">Email</label>

@@ -135,7 +135,7 @@ function MyPassword() {
       {
         profile && (
           <div className='mt-2'>
-            <h2 className='my-2 text-2xl font-bold'>Update My Password</h2>
+            <h2 className='my-2 text-2xl font-bold'>Update MyPassword</h2>
             <form action={formAction}>
               <div>
                 <label className='block' htmlFor="password">Update password</label>

@@ -24,10 +24,10 @@ function Sidebar() {
           Home
         </NavLink>
         <NavLink to="/auth/myemail" className={linkClass}>
-          Update Email
+          Update MyEmail
         </NavLink>
         <NavLink to="/auth/mypassword" className={linkClass}>
-          Change Password
+          Change MyPassword
         </NavLink>
         <NavLink to="/auth/tool" className={linkClass}>
           Tool List
