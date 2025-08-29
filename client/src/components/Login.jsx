@@ -67,6 +67,7 @@ function Login() {
           <label htmlFor="email">Email</label>
           <input id="email" type="text" name='email'
             className='p-2 text-black bg-zinc-200'
+            placeholder='Enter your email'
             defaultValue={formState.enteredValue?.email} />
         </div>
         <div className='container flex flex-col'>
@@ -74,6 +75,7 @@ function Login() {
           <input
             className='p-2 text-black bg-zinc-200'
             id="password" type="password" name='password'
+            placeholder='Enter your password'
             defaultValue={formState.enteredValue?.password} />
         </div>
 

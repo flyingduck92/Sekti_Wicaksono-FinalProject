@@ -69,6 +69,7 @@ function Register({ onRegisterSuccess }) {
           <label htmlFor="email">Email</label>
           <input id="email" type="text" name='email'
             className='p-2 text-black bg-zinc-200'
+            placeholder='Enter your email'
             defaultValue={formState.enteredValue?.email} />
         </div>
         <div className='container flex flex-col'>
@@ -76,6 +77,7 @@ function Register({ onRegisterSuccess }) {
           <input
             className='p-2 text-black bg-zinc-200'
             id="password" type="password" name='password'
+            placeholder='Enter your password'
             defaultValue={formState.enteredValue?.password} />
         </div>
         <div className='container flex flex-col'>
@@ -83,6 +85,7 @@ function Register({ onRegisterSuccess }) {
           <input
             className='p-2 text-black bg-zinc-200'
             id="confirmPassword" type="password" name='confirmPassword'
+            placeholder='Enter your password again'
             defaultValue={formState.enteredValue?.confirmPassword} />
         </div>
 
