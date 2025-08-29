@@ -8,7 +8,9 @@ import Home from '../pages/Home'
 import ToolList from '../pages/ToolList'
 import UserList from '../pages/UserList'
 import ProfileList from '../pages/ProfileList'
+
 import CategoryList from '../pages/CategoryList'
+import CategoryEdit from '../pages/CategoryEdit'
 
 import MyProfile from '../pages/MyProfile'
 import MyEmail from '../pages/MyEmail'
@@ -34,11 +36,11 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path='/' element={<AuthTabs />} />
-      <Route path='/about' element={<About />} />
       <Route path='/*' element={<NotFound />} />
 
-      {/* Admin after successfully Login */}
+      {/* Staff/Admin after successfully Login */}
       <Route element={<MainLayout />}>
+        <Route path='/about' element={<About />} />
         <Route path='/auth/home' element={<Home />} />
         <Route path='/auth/home/update' element={<MyProfile />} />
         <Route path='/auth/myemail' element={<MyEmail />} />
@@ -52,6 +54,7 @@ function AppRoutes() {
         </Route>
 
         <Route path='/auth/categories' element={<CategoryList />} />
+        <Route path={`/auth/categories/edit/:id`} element={<CategoryEdit />} />
       </Route>
 
     </Routes>

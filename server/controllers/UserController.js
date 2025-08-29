@@ -225,6 +225,14 @@ class UserController {
         include: [{ model: Profile }]
       })
 
+      if(!userFound) {
+        return res.status(404).json({
+          success: false,
+          data: null,
+          message: 'Email not found!'
+        })
+      }
+
       console.log('Password:', password)
       console.log('Hash:', userFound.password)
       console.log('Compare:', bcrypt.compareSync(password, userFound.password))
@@ -256,13 +264,7 @@ class UserController {
             message: 'Invalid password!'
           })
         }
-      } else {
-        return res.status(404).json({
-          success: false,
-          data: null,
-          message: 'Email not found!'
-        })
-      }
+      } 
     } catch (err) {
       return res.status(500).json({
         success: false,

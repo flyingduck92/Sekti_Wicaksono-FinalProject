@@ -20,7 +20,8 @@ UserRoutes.post('/create', UserController.addUser)
 
 
 // Admin Only
-UserRoutes.get('/search', UserController.searchUser)
+// /api/user/update
+// UserRoutes.get('/search', UserController.searchUser)
 UserRoutes.put('/update/:id', UserController.updateUser)
 UserRoutes.delete('/delete/:id', UserController.deleteUser)
 

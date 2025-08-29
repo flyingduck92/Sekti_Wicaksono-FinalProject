@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       dateOfBirth: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE // use Sequelize.DATEONLY next time
       },
       UserId: {
         type: Sequelize.UUID,

@@ -1,13 +1,12 @@
 import { jwtDecode } from 'jwt-decode'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useActionState } from 'react'
-import { hasMinLength, isNotEmpty } from '../utils/validation'
+import { isNotEmpty, hasMinLength } from '../utils/validation'
 
-
-function MyProfile() {
+function CategoryEdit() {
   const navigate = useNavigate()
 
   // get access_token from localStorage
@@ -59,7 +58,7 @@ function MyProfile() {
   const MyProfile = ({ decoded }) => {
     if (!decoded) return null
     return (
-      <div className='flex gap-4'>
+      <div className='flex gap-4 justify-between'>
         <div><strong>User ID: </strong> <p>{decoded.id}</p>  </div>
         <div><strong>Email: </strong><p>{decoded.email}</p>  </div>
         <div><strong>Role: </strong><p>{decoded.role}</p>  </div>
@@ -68,52 +67,62 @@ function MyProfile() {
     )
   }
 
-  /* Form Update */
+  /* Form Get based on ID before Update */
+  const { id } = useParams()
+  const [category, setCategory] = useState(null)
+
+  useEffect(() => {
+    if (!access_token) return
+    const fetchCategory = async () => {
+      try {
+        const res = await axios({
+          url: `http://localhost:3000/api/category/${id}`,
+          headers: { access_token }
+        })
+        setCategory(res.data.data.name) // adjust if your backend returns differently
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to fetch category')
+      }
+    }
+    fetchCategory()
+  }, [access_token, id])
 
   async function myProfileUpdateAction(prevFormState, formData) {
-    const username = formData.get('username')
-    const fullname = formData.get('fullname')
-    const dateOfBirth = formData.get('dateOfBirth')
-    const imageUrl = formData.get('imageUrl')
-
+    const name = formData.get('name')
+    
     const errors = []
-
-    if (!isNotEmpty(username) || !hasMinLength(username, 6)) {
-      errors.push('Username required and must have 6 characters minimum')
-    }
-    if (!isNotEmpty(fullname) || !hasMinLength(fullname, 6)) {
-      errors.push('Please input fullname and must have 6 characters minimum')
-    }
-    if (!isNotEmpty(dateOfBirth)) {
-      errors.push('Please input fullname')
+    if (!isNotEmpty(name) || !hasMinLength(name, 6)) {
+      errors.push('Category name at least six characters.')
     }
 
     // if error 
     if (errors.length > 0) {
       return {
         errors,
-        enteredValue: { username, fullname, dateOfBirth, imageUrl }
+        success: null,
+        enteredValue: { name }
       }
     }
 
-    let dataEntered = { username, fullname, dateOfBirth, imageUrl }
-    // console.log(dataEntered)
+    let dataEntered = { name }
 
     try {
       // if okay send to backend
       // http://localhost:3000/api/profile/update/c808c20b-9a3d-4af6-a704-fe9d0f57f1aa
       // and set error to null
       const update = await axios({
-        url: `http://localhost:3000/api/profile/me/update/${profile?.id}`,
+        url: `http://localhost:3000/api/category/update/${id}`,
         method: 'PUT',
         data: dataEntered,
         headers: { access_token }
       })
 
       if (update && update.data && update.data.message) {
-        navigate('/auth/home')
-      } else {
-        navigate('/auth/home')
+        return {
+          errors: null,
+          success: update.data?.message || 'Email updated successfully!',
+          enteredValue: { name }
+        }
       }
 
       return { errors: null }
@@ -122,14 +131,12 @@ function MyProfile() {
         errors: [
           err.response?.data?.message || 'Failed to update'
         ],
-        enteredValue: { username, fullname, dateOfBirth, imageUrl }
+        enteredValue: { name }
       }
     }
   }
 
   const [formState, formAction] = useActionState(myProfileUpdateAction, { error: null })
-
-  console.log(profile)
 
   return (
     <main>
@@ -141,36 +148,14 @@ function MyProfile() {
       {loading && <p>Loading profile...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {
-
         profile && (
           <div>
-            <img className='mx-auto' src={profile.imageUrl} alt={profile.username} />
             <form action={formAction}>
               <div>
-                <label className='block' htmlFor="username">Username</label>
+                <label className='block' htmlFor="name">Category Name</label>
                 <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                  type="text" name="username" id="username"
-                  defaultValue={formState.enteredValue?.username ? formState.enteredValue?.username : profile.username} />
-              </div>
-              <div>
-                <label className='block' htmlFor="fullname">Full name</label>
-                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                  type="text" name="fullname" id="fullname"
-                  defaultValue={formState.enteredValue?.fullname ? formState.enteredValue?.fullname : profile.fullname} />
-              </div>
-              <div>
-                <label className='block' htmlFor="dateOfBirth">Date of Birth</label>
-                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                  type="date" name="dateOfBirth" id="dateOfBirth"
-                  defaultValue={formState.enteredValue?.dateOfBirth ? formState.enteredValue?.dateOfBirth : profile.dateOfBirth?.slice(0, 10)}
-                />
-              </div>
-              <div>
-                <label className='block' htmlFor="imageUrl">Image URL</label>
-                <input className='px-3 py-1 bg-zinc-400 w-[250px]'
-                  type="text" name="imageUrl" id="imageUrl"
-                  defaultValue={formState.enteredValue?.imageUrl ? formState.enteredValue?.imageUrl : profile.imageUrl} />
-                <p className='block text-sm font-bold'>Please input your image url here</p>
+                  type="text" name="name" id="name"
+                  defaultValue={formState.enteredValue?.name ? formState.enteredValue?.name : category } />
               </div>
 
               {
@@ -181,7 +166,16 @@ function MyProfile() {
                       <li key={error}>{error}</li>
                     )
                   }
+
                 </ul>
+              }
+
+              {
+                formState.success && (
+                  <div className="border text-white bg-green-600 border-green-600 container m-4 mb-0 p-2">
+                    {formState.success}
+                  </div>
+                )
               }
 
               <button className='mt-8 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
@@ -195,4 +189,4 @@ function MyProfile() {
   )
 }
 
-export default MyProfile
+export default CategoryEdit

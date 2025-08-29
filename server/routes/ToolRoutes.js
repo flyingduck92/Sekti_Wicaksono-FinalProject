@@ -9,7 +9,8 @@ const { Tool } = require('../models')
 ToolRoutes.use(authentication) // protect routes from here
 
 // staff and admin can create/search/get
-ToolRoutes.post('/search', ToolController.searchTool)
+// /api/tool/create
+// ToolRoutes.post('/search', ToolController.searchTool)
 ToolRoutes.post('/create', ToolController.addTool)
 ToolRoutes.get('/', ToolController.getAllTools)
 ToolRoutes.get('/:id', ToolController.getOneTool)

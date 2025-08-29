@@ -6,10 +6,10 @@ function Navbar() {
   const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('access_token'))
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setLoggedIn(!!localStorage.getItem('access_token'))
-    }, 10000)
-    return () => clearInterval(interval)
+    // Listen for changes to localStorage (login/logout in other tabs)
+    const checkLogin = () => setLoggedIn(!!localStorage.getItem('access_token'))
+    window.addEventListener('storage', checkLogin)
+    return () => window.removeEventListener('storage', checkLogin)
   }, [])
 
 
@@ -24,9 +24,7 @@ function Navbar() {
       <Link to={loggedIn ? 'auth/home' : '/'}>
         {loggedIn ? 'Home' : 'Register/Login'}
       </Link>
-      {
-        !loggedIn && <Link to="/about">About</Link>
-      }
+      <Link to="/about">About</Link>
       {loggedIn && (
         <button onClick={() => handleLogout()}
           className="cursor-pointer bg-rose-500 py-2 px-6 font-bold text-white">

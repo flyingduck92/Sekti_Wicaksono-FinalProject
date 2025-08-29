@@ -82,7 +82,7 @@ function Home() {
             <img className='mx-auto' src={profile.imageUrl} alt={profile.username} />
             <p><strong>Fullname: </strong>{profile.fullname}</p>
             <p><strong>Username: </strong>{profile.username}</p>
-            <p><strong>Date of Birth: </strong>{new Date(profile.dateOfBirth).toLocaleDateString()}</p>
+            <p><strong>Date of Birth: </strong>{profile.dateOfBirth}</p>
           </div>
         )
       }
