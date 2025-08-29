@@ -110,10 +110,27 @@ class UserController {
       const id = req.params.id
       const { email, password } = req.body
 
-      const updatedUser = {email}
+      // Check if email is already used by another user
+      if (email) {
+        const emailExists = await User.findOne({
+          where: {
+            email,
+            id: { [Op.ne]: id }
+          }
+        })
+        if (emailExists) {
+          return res.status(409).json({
+            success: false,
+            data: null,
+            message: 'Email already exists.'
+          })
+        }
+      }
+
+      const updatedUser = { email }
 
       // password is optional update
-      if(password) {
+      if (password) {
         updatedUser.password = encryptPwd(password)
       }
 
@@ -225,7 +242,7 @@ class UserController {
         include: [{ model: Profile }]
       })
 
-      if(!userFound) {
+      if (!userFound) {
         return res.status(404).json({
           success: false,
           data: null,
@@ -264,7 +281,7 @@ class UserController {
             message: 'Invalid password!'
           })
         }
-      } 
+      }
     } catch (err) {
       return res.status(500).json({
         success: false,
