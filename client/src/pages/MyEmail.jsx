@@ -69,7 +69,7 @@ function MyEmail() {
   }
 
   /* Form Update */
-  async function myProfileUpdateAction(prevFormState, formData) {
+  async function myEmailUpdateAction(prevFormState, formData) {
     const email = formData.get('email')
 
     const errors = []
@@ -121,7 +121,7 @@ function MyEmail() {
     }
   }
 
-  const [formState, formAction] = useActionState(myProfileUpdateAction, { error: null })
+  const [formState, formAction] = useActionState(myEmailUpdateAction, { error: null })
 
   return (
     <main>

@@ -88,7 +88,7 @@ function UserEdit() {
   }, [access_token, id])
 
   /* Form Update */
-  async function myUserAction(prevFormState, formData) {
+  async function userEditAction(prevFormState, formData) {
     const email = formData.get('email')
     const password = formData.get('password')
 
@@ -101,7 +101,6 @@ function UserEdit() {
     if (isNotEmpty(password) && !hasMinLength(password, 6)) {
       errors.push('Password at least six characters.')
     }
-
 
     // if error 
     if (errors.length > 0) {
@@ -147,7 +146,7 @@ function UserEdit() {
     }
   }
 
-  const [formState, formAction] = useActionState(myUserAction, { error: null })
+  const [formState, formAction] = useActionState(userEditAction, { error: null })
 
   return (
     <main>

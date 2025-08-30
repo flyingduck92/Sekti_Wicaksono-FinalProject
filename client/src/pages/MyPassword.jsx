@@ -70,7 +70,7 @@ function MyPassword() {
 
   /* Form Update */
 
-  async function myProfileUpdateAction(prevFormState, formData) {
+  async function myPasswordUpdateAction(prevFormState, formData) {
     const password = formData.get('password')
 
     const errors = []
@@ -121,7 +121,7 @@ function MyPassword() {
     }
   }
 
-  const [formState, formAction] = useActionState(myProfileUpdateAction, { error: null })
+  const [formState, formAction] = useActionState(myPasswordUpdateAction, { error: null })
 
   return (
     <main>

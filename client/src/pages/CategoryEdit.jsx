@@ -121,7 +121,7 @@ function CategoryEdit() {
       if (update && update.data && update.data.message) {
         return {
           errors: null,
-          success: update.data?.message || 'Email updated successfully!',
+          success: update.data?.message || 'Category updated successfully!',
           enteredValue: { name }
         }
       }

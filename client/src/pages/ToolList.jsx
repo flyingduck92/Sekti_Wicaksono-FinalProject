@@ -127,7 +127,7 @@ function ToolList() {
   }, [access_token, currentPage, pageSize, navigate])
 
   /* Form Add */
-  async function myToolAction(prevFormState, formData) {
+  async function toolAddAction(prevFormState, formData) {
     const code = formData.get('code')
     const name = formData.get('name')
     const price = formData.get('price')
@@ -190,7 +190,7 @@ function ToolList() {
     }
   }
 
-  const [formState, formAction] = useActionState(myToolAction, { error: null })
+  const [formState, formAction] = useActionState(toolAddAction, { error: null })
 
   // Modal 
   const [showModal, setShowModal] = useState(false)

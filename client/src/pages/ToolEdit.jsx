@@ -108,7 +108,7 @@ function ToolEdit() {
   }, [access_token])
 
   /* Form Update */
-  async function myToolAction(prevFormState, formData) {
+  async function toolEditAction(prevFormState, formData) {
     const code = formData.get('code')
     const name = formData.get('name')
     const price = formData.get('price')
@@ -173,7 +173,7 @@ function ToolEdit() {
     }
   }
 
-  const [formState, formAction] = useActionState(myToolAction, { error: null })
+  const [formState, formAction] = useActionState(toolEditAction, { error: null })
 
   return (
     <main>

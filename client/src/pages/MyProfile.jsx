@@ -83,7 +83,7 @@ function MyProfile() {
       errors.push('Please input fullname and must have 6 characters minimum')
     }
     if (!isNotEmpty(dateOfBirth)) {
-      errors.push('Please input dateOfBirth')
+      errors.push('Please input date of birth')
     }
 
     // if error 
