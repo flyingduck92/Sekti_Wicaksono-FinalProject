@@ -27,7 +27,7 @@ const staffOrOwner = (model, foreignKey = 'ProfileId') => {
         message: `Forbidden: You're not the owner of this record.`
       })
     }
-
+    next()
   }
 }
 

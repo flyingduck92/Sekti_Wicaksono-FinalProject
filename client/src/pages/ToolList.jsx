@@ -148,6 +148,9 @@ function ToolList() {
     if (!isNotEmpty(stock)) {
       errors.push('Stock is required.')
     }
+    if (!isNotEmpty(code)) {
+      errors.push('Category is required')
+    }
 
     // if error 
     if (errors.length > 0) {
@@ -363,11 +366,10 @@ function ToolList() {
               </tbody>
             </table>
 
-            {/* MODAL START*/}
             {showModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
                 <div className="bg-white p-6 rounded shadow-lg">
-                  <p>Are you sure you want to delete this?</p>
+                  <p>Are you sure you want to delete this category?</p>
                   <div className="flex gap-4 mt-4">
                     <button
                       onClick={async () => {
@@ -375,7 +377,7 @@ function ToolList() {
                         setShowModal(false)
                         setSelectedToolId(null)
                       }}
-                      className="bg-red-500 text-white px-4 py-2 rounded"
+                      className="font-bold bg-red-500 text-white px-4 py-2 rounded"
                     >
                       Yes
                     </button>
@@ -384,7 +386,7 @@ function ToolList() {
                         setShowModal(false)
                         setSelectedToolId(null)
                       }}
-                      className="bg-gray-300 px-4 py-2 rounded"
+                      className="font-bold bg-gray-300 px-4 py-2 rounded"
                     >
                       No
                     </button>

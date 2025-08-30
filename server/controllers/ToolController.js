@@ -97,11 +97,11 @@ class ToolController {
       const { code, name, price, stock, imageUrl, CategoryId, ProfileId } = req.body
 
       // checking code to others id
-      const existingTool = await Tool.findOne({ 
-        where: { 
-          code, 
-          id: { [Op.ne]: id } 
-        } 
+      const existingTool = await Tool.findOne({
+        where: {
+          code,
+          id: { [Op.ne]: id }
+        }
       })
       // if belongs to other ID, say already exists
       if (existingTool) {
