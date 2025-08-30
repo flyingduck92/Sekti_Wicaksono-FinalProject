@@ -129,7 +129,7 @@ function ToolEdit() {
     if (!isNotEmpty(stock)) {
       errors.push('Stock is required.')
     }
-    if (!isNotEmpty(CategoryId)) {
+    if (!isNotEmpty(CategoryId) || CategoryId === null) {
       errors.push('CategoryId is required.')
     }
 

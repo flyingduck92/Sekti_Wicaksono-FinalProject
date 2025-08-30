@@ -135,6 +135,8 @@ function ToolList() {
     const imageUrl = formData.get('imageUrl') // optional
     const CategoryId = formData.get('CategoryId')
 
+    console.log(CategoryId)
+
     const errors = []
     if (!isNotEmpty(code) || !hasMinLength(code, 5)) {
       errors.push('Tool code at least five characters.')
@@ -148,7 +150,7 @@ function ToolList() {
     if (!isNotEmpty(stock)) {
       errors.push('Stock is required.')
     }
-    if (!isNotEmpty(code)) {
+    if (!isNotEmpty(CategoryId) || CategoryId === null) {
       errors.push('Category is required')
     }
 
@@ -299,7 +301,7 @@ function ToolList() {
                 )
               }
 
-              <button className='font-bold mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
+              <button disabled={categories[0]?.id == ''} className='font-bold mt-6 cursor-pointer bg-sky-600 text-zinc-200 px-3 py-1' type='submit'>
                 Add a Tool
               </button>
             </form>
@@ -336,7 +338,7 @@ function ToolList() {
                           <td className="border px-4 py-2">{c.name}</td>
                           <td className="border px-4 py-2">Rp. {c.price.toLocaleString('id')}</td>
                           <td className="border px-4 py-2">{c.stock}</td>
-                          <td className="border px-4 py-2">{c.Profile.fullname}</td>
+                          <td className="border px-4 py-2">{c.Profile?.fullname || '-'}</td>
                           <td className="border px-4 py-2">
                             {c.imageUrl
                               ? <img src={c.imageUrl} alt={c.code} />
@@ -366,34 +368,36 @@ function ToolList() {
               </tbody>
             </table>
 
-            {showModal && (
-              <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
-                <div className="bg-white p-6 rounded shadow-lg">
-                  <p>Are you sure you want to delete this category?</p>
-                  <div className="flex gap-4 mt-4">
-                    <button
-                      onClick={async () => {
-                        await deleteToolHandler(selectedToolId)
-                        setShowModal(false)
-                        setSelectedToolId(null)
-                      }}
-                      className="font-bold bg-red-500 text-white px-4 py-2 rounded"
-                    >
-                      Yes
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowModal(false)
-                        setSelectedToolId(null)
-                      }}
-                      className="font-bold bg-gray-300 px-4 py-2 rounded"
-                    >
-                      No
-                    </button>
+            {
+              showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-red-300/30 z-50">
+                  <div className="bg-white p-6 rounded shadow-lg">
+                    <p>Are you sure you want to delete this category?</p>
+                    <div className="flex gap-4 mt-4">
+                      <button
+                        onClick={async () => {
+                          await deleteToolHandler(selectedToolId)
+                          setShowModal(false)
+                          setSelectedToolId(null)
+                        }}
+                        className="font-bold bg-red-500 text-white px-4 py-2 rounded"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowModal(false)
+                          setSelectedToolId(null)
+                        }}
+                        className="font-bold bg-gray-300 px-4 py-2 rounded"
+                      >
+                        No
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )
+            }
             {/* MODAL END */}
 
             {/* pagination control */}
@@ -415,10 +419,10 @@ function ToolList() {
               </button>
             </div>
 
-          </div>
+          </div >
         )
       }
-    </main>
+    </main >
   )
 }
 

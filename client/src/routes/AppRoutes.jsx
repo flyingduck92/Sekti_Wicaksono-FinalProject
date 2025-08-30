@@ -22,10 +22,10 @@ import MyProfile from '../pages/MyProfile'
 import MyEmail from '../pages/MyEmail'
 import MyPassword from '../pages/MyPassword'
 
-function RequireAuth({allowedRoles}) {
+function RequireAuth({ allowedRoles }) {
   let role = null
   let access_token = localStorage.getItem('access_token')
-  if(access_token) {
+  if (access_token) {
     try {
       const payload = jwtDecode(access_token)
       role = payload.role
