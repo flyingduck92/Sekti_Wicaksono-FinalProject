@@ -261,9 +261,9 @@ function UserList() {
                       return (
                         <tr key={c.id}>
                           <td className="border px-4 py-2">{numbering}</td>
-                          <td className="border px-4 py-2">{c.email}</td>
-                          <td className="border px-4 py-2">{c.Profile.username ? c.Profile.name : 'No Username'}</td>
-                          <td className="border px-4 py-2">{c.Profile.role}</td>
+                          <td className="border px-4 py-2">{c?.email}</td>
+                          <td className="border px-4 py-2">{c?.Profile?.username ? c?.Profile?.username : 'No Username'}</td>
+                          <td className="border px-4 py-2">{c?.Profile?.role}</td>
                           <td className="border px-4 py-2">
                             {
                               (c.email !== decoded.email) && <>
