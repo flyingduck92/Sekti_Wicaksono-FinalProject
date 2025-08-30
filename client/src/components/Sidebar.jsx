@@ -45,7 +45,7 @@ function Sidebar() {
           )
         }
         <NavLink to="/auth/categories" className={linkClass}>
-          Category
+          Category List
         </NavLink>
       </div>
     </nav>
